@@ -1,0 +1,548 @@
+[
+    {
+        "id": "1",
+        "owner_uuid": "f3f27ccf-1394-41f9-9aae-2ef86dc3b656",
+        "property_uuid": "1787cb4a-a428-4385-9da6-1f9a2dca32a4",
+        "created_at": "2024-01-09 21:50:54",
+        "updated_at": "2024-01-09 21:50:54"
+    },
+    {
+        "id": "2",
+        "owner_uuid": "415a82f3-5d70-42e4-9de4-351a7ee9e846",
+        "property_uuid": "e519d73b-3594-413f-a5a4-319f4f477e72",
+        "created_at": "2024-01-09 22:05:56",
+        "updated_at": "2024-01-09 22:05:56"
+    },
+    {
+        "id": "3",
+        "owner_uuid": "305c6638-0e24-45d9-a1c3-340cd1eac5f5",
+        "property_uuid": "e519d73b-3594-413f-a5a4-319f4f477e72",
+        "created_at": "2024-01-09 22:06:40",
+        "updated_at": "2024-01-09 22:06:40"
+    },
+    {
+        "id": "4",
+        "owner_uuid": "e07ebea5-8447-4a49-8480-a278f044d45a",
+        "property_uuid": "e69d2812-824b-4d89-a26f-1ea0f857c5e5",
+        "created_at": "2024-01-09 22:10:00",
+        "updated_at": "2024-01-09 22:10:00"
+    },
+    {
+        "id": "5",
+        "owner_uuid": "70d1fc9a-e35f-4841-847d-05b339a5f588",
+        "property_uuid": "07c7fa2c-67c3-40f9-b1ee-80bb8c10350d",
+        "created_at": "2024-01-09 22:11:45",
+        "updated_at": "2024-01-09 22:11:45"
+    },
+    {
+        "id": "6",
+        "owner_uuid": "12d88bab-ee4e-4f57-bcf6-95f70093f712",
+        "property_uuid": "c907ffe2-60a2-4fa7-a2ec-70c5b4b7ac41",
+        "created_at": "2024-01-09 22:22:59",
+        "updated_at": "2024-01-09 22:22:59"
+    },
+    {
+        "id": "7",
+        "owner_uuid": "04564a83-62b2-4a8f-a6c9-142203c0e787",
+        "property_uuid": "225d0744-387e-41e0-9503-3747aa1df7be",
+        "created_at": "2024-01-09 22:24:02",
+        "updated_at": "2024-01-09 22:24:02"
+    },
+    {
+        "id": "8",
+        "owner_uuid": "052b9e4d-f5d7-45f0-b37d-84d27cfceb2a",
+        "property_uuid": "cf375004-e61e-4799-a4f2-fa7d2ae6e227",
+        "created_at": "2024-01-09 23:48:00",
+        "updated_at": "2024-01-09 23:48:00"
+    },
+    {
+        "id": "9",
+        "owner_uuid": "e06677b1-391d-4021-8002-9a81d39fb1af",
+        "property_uuid": "b80bbedb-9c86-4328-9752-ecb17ec081a3",
+        "created_at": "2024-01-10 00:22:19",
+        "updated_at": "2024-01-10 00:22:19"
+    },
+    {
+        "id": "10",
+        "owner_uuid": "83124b2c-308b-4e56-9d1a-26a06002bdb3",
+        "property_uuid": "35cd92f6-aca6-49ba-815b-d332403c4897",
+        "created_at": "2024-01-10 00:23:31",
+        "updated_at": "2024-01-10 00:23:31"
+    },
+    {
+        "id": "11",
+        "owner_uuid": "13f27c13-1c85-4913-b271-adf8973eacdc",
+        "property_uuid": "a6ad9439-1ca1-4238-8b6e-4523327ec41a",
+        "created_at": "2024-01-10 00:27:44",
+        "updated_at": "2024-01-10 00:27:44"
+    },
+    {
+        "id": "12",
+        "owner_uuid": "9a36a551-b8cc-4576-add8-fc7fd686c1a6",
+        "property_uuid": "6f63d226-b3bb-4da9-bb2f-0efa5af0a630",
+        "created_at": "2024-01-10 00:28:34",
+        "updated_at": "2024-01-10 00:28:34"
+    },
+    {
+        "id": "13",
+        "owner_uuid": "cbd9ad91-7ad6-425f-96a0-94e1c44a818b",
+        "property_uuid": "b80bbedb-9c86-4328-9752-ecb17ec081a3",
+        "created_at": "2024-01-10 00:29:19",
+        "updated_at": "2024-01-10 00:29:19"
+    },
+    {
+        "id": "14",
+        "owner_uuid": "5e2ec507-b2cb-4a07-b3c9-bec81a5c50d8",
+        "property_uuid": "b80bbedb-9c86-4328-9752-ecb17ec081a3",
+        "created_at": "2024-01-10 00:30:07",
+        "updated_at": "2024-01-10 00:30:07"
+    },
+    {
+        "id": "15",
+        "owner_uuid": "572024b0-3d7c-4848-80f3-3786318fa207",
+        "property_uuid": "c78d37f5-aefb-48c2-b759-17076701aa01",
+        "created_at": "2024-01-10 00:33:24",
+        "updated_at": "2024-01-10 00:33:24"
+    },
+    {
+        "id": "16",
+        "owner_uuid": "ab5d21c7-a9ae-43fb-95e0-33fc0aa7fc8f",
+        "property_uuid": "ec60901a-3fb1-4f88-9951-86f3e6ac6e83",
+        "created_at": "2024-01-10 00:34:33",
+        "updated_at": "2024-01-10 00:34:33"
+    },
+    {
+        "id": "17",
+        "owner_uuid": "253e775a-4c91-4179-8e22-5929beb6199e",
+        "property_uuid": "3a767630-68ca-4550-8d9c-da5b5f28e3e7",
+        "created_at": "2024-01-10 01:48:26",
+        "updated_at": "2024-01-10 01:48:26"
+    },
+    {
+        "id": "18",
+        "owner_uuid": "d26663a8-ada9-407d-8c2b-5eb2a36be7e8",
+        "property_uuid": "14655e01-fd9d-47a2-a990-6d7ff8be1e10",
+        "created_at": "2024-01-10 01:51:16",
+        "updated_at": "2024-01-10 01:51:16"
+    },
+    {
+        "id": "19",
+        "owner_uuid": "8d40acc6-9ff9-4a24-995c-5b8b49fabfd8",
+        "property_uuid": "7d19d4ae-b6dd-499e-bd1f-2e4a60ae1b9a",
+        "created_at": "2024-01-10 01:51:53",
+        "updated_at": "2024-01-10 01:51:53"
+    },
+    {
+        "id": "20",
+        "owner_uuid": "dbf1bad3-e341-44b5-919d-2e50c2cdfea8",
+        "property_uuid": "4bda4a5f-6078-4f56-887c-fb5291a74c5f",
+        "created_at": "2024-01-10 01:55:09",
+        "updated_at": "2024-01-10 01:55:09"
+    },
+    {
+        "id": "21",
+        "owner_uuid": "429a612a-ac10-4fbf-bfaa-151b2e5f53d6",
+        "property_uuid": "b2cc820f-d1ed-4815-a688-953359dbfdf9",
+        "created_at": "2024-01-10 01:56:21",
+        "updated_at": "2024-01-10 01:56:21"
+    },
+    {
+        "id": "22",
+        "owner_uuid": "ee3fd767-9225-4a65-86b0-8e4567b01608",
+        "property_uuid": "939aaa67-57a4-4c1b-aa52-c774cd32e6ee",
+        "created_at": "2024-01-10 01:57:11",
+        "updated_at": "2024-01-10 01:57:11"
+    },
+    {
+        "id": "23",
+        "owner_uuid": "a9887a57-8860-4a57-8fba-1c5b7b37d797",
+        "property_uuid": "427faa64-cff0-404c-97e8-b9f0adf4ac2f",
+        "created_at": "2024-01-10 01:57:44",
+        "updated_at": "2024-01-10 01:57:44"
+    },
+    {
+        "id": "24",
+        "owner_uuid": "be1c3fd9-eeb5-40d0-99ad-afd96cbf9e24",
+        "property_uuid": "ccc8543f-f75f-46ba-b08d-79adb4e89448",
+        "created_at": "2024-01-10 01:58:32",
+        "updated_at": "2024-01-10 01:58:32"
+    },
+    {
+        "id": "25",
+        "owner_uuid": "4d96cff5-5bde-46dc-b1ea-93dd33987037",
+        "property_uuid": "f63a9ea6-7ea0-4750-bdd1-0869e83ff364",
+        "created_at": "2024-01-10 02:01:21",
+        "updated_at": "2024-01-10 02:01:21"
+    },
+    {
+        "id": "26",
+        "owner_uuid": "7fa1ddd6-d5f8-4b01-bf7f-e96648b2b233",
+        "property_uuid": "2b3d66c5-7ac0-4943-8108-bd6861b7692d",
+        "created_at": "2024-01-10 02:54:08",
+        "updated_at": "2024-01-10 02:54:08"
+    },
+    {
+        "id": "27",
+        "owner_uuid": "4e6deb27-11fe-4444-9a59-54051b6a691d",
+        "property_uuid": "204058fc-65dd-47bb-9ae9-286b21f6b335",
+        "created_at": "2024-01-10 02:55:40",
+        "updated_at": "2024-01-10 02:55:40"
+    },
+    {
+        "id": "28",
+        "owner_uuid": "0a8b7ff8-3ad5-4c23-becf-94a27824657c",
+        "property_uuid": "b5e148f0-5b85-42d3-bc2c-e0d72bbfccba",
+        "created_at": "2024-01-10 02:56:27",
+        "updated_at": "2024-01-10 02:56:27"
+    },
+    {
+        "id": "29",
+        "owner_uuid": "7f12f8f7-528c-49b4-9fc4-189a84b7dffc",
+        "property_uuid": "045a66e5-0dff-4cd7-9fce-9e252e00b4c3",
+        "created_at": "2024-01-10 02:57:12",
+        "updated_at": "2024-01-10 02:57:12"
+    },
+    {
+        "id": "30",
+        "owner_uuid": "07132098-133f-48fe-98b2-34c8002b4520",
+        "property_uuid": "47d222dc-c944-4a8d-9515-f82405fe7cdf",
+        "created_at": "2024-01-10 02:57:43",
+        "updated_at": "2024-01-10 02:57:43"
+    },
+    {
+        "id": "31",
+        "owner_uuid": "48fe025f-087e-4f13-9f38-bad43f1819bc",
+        "property_uuid": "548b6530-3924-44d9-b331-6fb71f1c0515",
+        "created_at": "2024-01-10 02:58:16",
+        "updated_at": "2024-01-10 02:58:16"
+    },
+    {
+        "id": "32",
+        "owner_uuid": "b1572b24-7303-4253-9267-5a68a8930c1d",
+        "property_uuid": "513da1ee-a257-48a3-9a10-6f3ac6d52e0f",
+        "created_at": "2024-01-10 03:44:47",
+        "updated_at": "2024-01-10 03:44:47"
+    },
+    {
+        "id": "33",
+        "owner_uuid": "6add2ee6-475d-4389-a04a-4df6a57786ab",
+        "property_uuid": "1fd7fd97-3b5e-4ea8-92f1-2c2d4e85ebe2",
+        "created_at": "2024-01-10 03:45:31",
+        "updated_at": "2024-01-10 03:45:31"
+    },
+    {
+        "id": "34",
+        "owner_uuid": "a2f05b94-3bd9-4abc-81ce-c606645e4361",
+        "property_uuid": "cab36ad5-080b-44b5-9752-c0d8ab37deed",
+        "created_at": "2024-01-10 03:48:30",
+        "updated_at": "2024-01-10 03:48:30"
+    },
+    {
+        "id": "35",
+        "owner_uuid": "36c27857-b713-495c-92e2-93b13f627271",
+        "property_uuid": "b301bd26-00ad-4862-a28c-c96ded3f1abf",
+        "created_at": "2024-01-10 03:49:51",
+        "updated_at": "2024-01-10 03:49:51"
+    },
+    {
+        "id": "36",
+        "owner_uuid": "3a517fb8-6d56-4d30-bbb2-0293a4b039df",
+        "property_uuid": "b3aba484-538b-48e7-a7e8-8af842888105",
+        "created_at": "2024-01-10 03:50:40",
+        "updated_at": "2024-01-10 03:50:40"
+    },
+    {
+        "id": "37",
+        "owner_uuid": "8822dfc2-054e-41b8-a82b-15e781c425e4",
+        "property_uuid": "1787cb4a-a428-4385-9da6-1f9a2dca32a4",
+        "created_at": "2024-01-10 03:51:19",
+        "updated_at": "2024-01-10 03:51:19"
+    },
+    {
+        "id": "38",
+        "owner_uuid": "12525834-fa47-458d-9f0a-18f7f8470e87",
+        "property_uuid": "eab9a08c-e850-4dd5-a680-481aaec5e149",
+        "created_at": "2024-01-10 03:58:03",
+        "updated_at": "2024-01-10 03:58:03"
+    },
+    {
+        "id": "39",
+        "owner_uuid": "08b56d90-be28-49b5-8158-9cddaba4b289",
+        "property_uuid": "a6ad9439-1ca1-4238-8b6e-4523327ec41a",
+        "created_at": "2024-01-10 03:59:31",
+        "updated_at": "2024-01-10 03:59:31"
+    },
+    {
+        "id": "40",
+        "owner_uuid": "bed2a987-a2cb-4560-821d-735fa0833df5",
+        "property_uuid": "4362cc6b-7da0-4823-ac95-864c8f79e811",
+        "created_at": "2024-01-10 04:01:15",
+        "updated_at": "2024-01-10 04:01:15"
+    },
+    {
+        "id": "41",
+        "owner_uuid": "b76f055e-fa0f-4e21-8171-2c08c80c028a",
+        "property_uuid": "ea498025-ed4f-4743-a703-d7c135a9e04d",
+        "created_at": "2024-01-10 04:02:09",
+        "updated_at": "2024-01-10 04:02:09"
+    },
+    {
+        "id": "42",
+        "owner_uuid": "e6814fd6-f688-4156-8d17-c7caf06144e9",
+        "property_uuid": "ccc8543f-f75f-46ba-b08d-79adb4e89448",
+        "created_at": "2024-01-11 00:27:54",
+        "updated_at": "2024-01-11 00:27:54"
+    },
+    {
+        "id": "43",
+        "owner_uuid": "06e6d3b8-4895-4a03-8265-1f2949ea6b3e",
+        "property_uuid": "402ebc2e-3f08-471f-8f02-370ae3a0cd86",
+        "created_at": "2024-01-11 00:29:27",
+        "updated_at": "2024-01-11 00:29:27"
+    },
+    {
+        "id": "44",
+        "owner_uuid": "a49ede5a-233c-4934-b76c-27e3605d6814",
+        "property_uuid": "8079164d-f77a-4414-b2c9-2b34046c902d",
+        "created_at": "2024-01-11 00:31:16",
+        "updated_at": "2024-01-11 00:31:16"
+    },
+    {
+        "id": "45",
+        "owner_uuid": "d75c18ca-167a-45d0-bc66-3cb1dd167fdb",
+        "property_uuid": "d2ba10bb-efae-4c7a-b121-fa86d3cabd4c",
+        "created_at": "2024-01-11 00:32:21",
+        "updated_at": "2024-01-11 00:32:21"
+    },
+    {
+        "id": "46",
+        "owner_uuid": "4a469f9e-dbcd-4762-9017-f9db2632cc7d",
+        "property_uuid": "dc8cead8-eea0-46b4-88f6-8cf8a468d0e5",
+        "created_at": "2024-01-11 00:33:23",
+        "updated_at": "2024-01-11 00:33:23"
+    },
+    {
+        "id": "47",
+        "owner_uuid": "8a645ed9-b02a-4923-b9a6-abc395bbbe7e",
+        "property_uuid": "b9ea078d-f099-4278-94bc-1eea711b5b74",
+        "created_at": "2024-01-11 00:34:33",
+        "updated_at": "2024-01-11 00:34:33"
+    },
+    {
+        "id": "48",
+        "owner_uuid": "4e57af98-1227-4308-8665-b501bb3f188c",
+        "property_uuid": "090184bc-07f6-492a-b037-ee159a265fcc",
+        "created_at": "2024-01-11 00:39:40",
+        "updated_at": "2024-01-11 00:39:40"
+    },
+    {
+        "id": "49",
+        "owner_uuid": "cf9ef393-7b69-468c-b5c3-626ef3e5cbff",
+        "property_uuid": "428cf1d9-7e8f-4b54-8928-b4b1446dbf5c",
+        "created_at": "2024-01-11 00:41:21",
+        "updated_at": "2024-01-11 00:41:21"
+    },
+    {
+        "id": "50",
+        "owner_uuid": "06088de3-7dc3-44b5-b01b-54d60459ec32",
+        "property_uuid": "fd539dc7-1cef-41ee-b21f-8360429a090b",
+        "created_at": "2024-01-11 00:42:40",
+        "updated_at": "2024-01-11 00:42:40"
+    },
+    {
+        "id": "51",
+        "owner_uuid": "f8e10d74-f680-40f2-b6e6-17f3552aa5a6",
+        "property_uuid": "99eb6e1e-03ef-484f-820e-e8010dbfaf75",
+        "created_at": "2024-01-11 00:47:46",
+        "updated_at": "2024-01-11 00:47:46"
+    },
+    {
+        "id": "52",
+        "owner_uuid": "1b5623e4-7f19-4a05-89ea-2ec461449545",
+        "property_uuid": "4fc4aaf7-1f91-4d9a-b18a-3d3dcc8e9d2f",
+        "created_at": "2024-01-11 00:49:40",
+        "updated_at": "2024-01-11 00:49:40"
+    },
+    {
+        "id": "53",
+        "owner_uuid": "2ee7523a-61c4-4e83-8115-46d187491c95",
+        "property_uuid": "f8561a60-61aa-4d51-bd35-175a8512f8d0",
+        "created_at": "2024-01-11 00:50:42",
+        "updated_at": "2024-01-11 00:50:42"
+    },
+    {
+        "id": "54",
+        "owner_uuid": "393b915e-c7e2-466d-8bb1-65f9eaf1ade0",
+        "property_uuid": "b301bd26-00ad-4862-a28c-c96ded3f1abf",
+        "created_at": "2024-01-11 00:51:43",
+        "updated_at": "2024-01-11 00:51:43"
+    },
+    {
+        "id": "55",
+        "owner_uuid": "16154123-c6ea-43c6-a204-fdc082e7069a",
+        "property_uuid": "b301bd26-00ad-4862-a28c-c96ded3f1abf",
+        "created_at": "2024-01-11 00:53:08",
+        "updated_at": "2024-01-11 00:53:08"
+    },
+    {
+        "id": "56",
+        "owner_uuid": "8f31868c-e7fc-4e36-ac70-7599da840a02",
+        "property_uuid": "9aea114b-d93e-4f70-af62-b668a6da8869",
+        "created_at": "2024-01-11 01:02:15",
+        "updated_at": "2024-01-11 01:02:15"
+    },
+    {
+        "id": "57",
+        "owner_uuid": "18d8d0a1-03db-4671-9510-419d4e2e2ee1",
+        "property_uuid": "69572f73-2c4b-4de8-89a1-784b8adcce54",
+        "created_at": "2024-01-11 01:03:10",
+        "updated_at": "2024-01-11 01:03:10"
+    },
+    {
+        "id": "58",
+        "owner_uuid": "604d4b8b-6d72-476e-9b4a-175f257e5980",
+        "property_uuid": "c19e6832-19f7-4583-ac54-4c29397ea4c9",
+        "created_at": "2024-01-11 01:04:16",
+        "updated_at": "2024-01-11 01:04:16"
+    },
+    {
+        "id": "59",
+        "owner_uuid": "b8495585-3257-417c-b848-1dcc47b0bb8b",
+        "property_uuid": "f9b8632c-7186-4f61-a2e7-51c88cd368b8",
+        "created_at": "2024-01-11 01:05:11",
+        "updated_at": "2024-01-11 01:05:11"
+    },
+    {
+        "id": "60",
+        "owner_uuid": "37e56cd7-a004-4138-af1d-04a8c43a90d2",
+        "property_uuid": "a4f969ac-6e72-4aca-b77e-158ab7d461d2",
+        "created_at": "2024-01-11 01:05:50",
+        "updated_at": "2024-01-11 01:05:50"
+    },
+    {
+        "id": "61",
+        "owner_uuid": "8350f9e7-eba5-426e-837c-0a6d9cf1410c",
+        "property_uuid": "0e1ed229-4baf-4a88-b211-bc717f4f92e0",
+        "created_at": "2024-01-11 01:06:43",
+        "updated_at": "2024-01-11 01:06:43"
+    },
+    {
+        "id": "62",
+        "owner_uuid": "e8618b1d-87eb-4d37-9603-a1b6709f4b8d",
+        "property_uuid": "50356cb6-44d5-41bf-a699-ea2211c9141b",
+        "created_at": "2024-01-11 01:07:36",
+        "updated_at": "2024-01-11 01:07:36"
+    },
+    {
+        "id": "63",
+        "owner_uuid": "353a0038-80f5-4c78-97f7-f458e5158c06",
+        "property_uuid": "641bf09d-89fc-45ec-a126-51a6d558c87f",
+        "created_at": "2024-01-11 01:10:08",
+        "updated_at": "2024-01-11 01:10:08"
+    },
+    {
+        "id": "64",
+        "owner_uuid": "e5d63132-5514-4862-9823-972bfe29946d",
+        "property_uuid": "9795798b-f40d-4bca-8b56-80481f03c593",
+        "created_at": "2024-01-11 01:11:15",
+        "updated_at": "2024-01-11 01:11:15"
+    },
+    {
+        "id": "65",
+        "owner_uuid": "13321826-2c64-4f97-9771-40536da83cca",
+        "property_uuid": "31e6c350-9ad0-4b71-b896-2d09216a7389",
+        "created_at": "2024-01-11 01:13:31",
+        "updated_at": "2024-01-11 01:13:31"
+    },
+    {
+        "id": "66",
+        "owner_uuid": "baa6e6d1-ddff-4dd6-aacc-1e263f3324e2",
+        "property_uuid": "8884c1aa-117d-4edb-be41-6f6de5cdee54",
+        "created_at": "2024-01-11 01:14:20",
+        "updated_at": "2024-01-11 01:14:20"
+    },
+    {
+        "id": "67",
+        "owner_uuid": "72748695-7b0d-4f57-99b1-d057267e5d13",
+        "property_uuid": "fad05c71-564a-489d-b3ba-410794b9c25c",
+        "created_at": "2024-01-11 01:18:11",
+        "updated_at": "2024-01-11 01:18:11"
+    },
+    {
+        "id": "68",
+        "owner_uuid": "db796e5e-c8ec-4572-9640-c598fd452f60",
+        "property_uuid": "90f2db85-73ee-401f-8278-1f0f526205d0",
+        "created_at": "2024-01-11 01:24:57",
+        "updated_at": "2024-01-11 01:24:57"
+    },
+    {
+        "id": "69",
+        "owner_uuid": "2345554e-39c3-48a9-b74f-e527436a95b6",
+        "property_uuid": "c0c71d69-bc29-46ae-9ba4-3aba8a4edbad",
+        "created_at": "2024-01-11 01:26:36",
+        "updated_at": "2024-01-11 01:26:36"
+    },
+    {
+        "id": "70",
+        "owner_uuid": "d1496e38-e344-413e-9551-7604c6553e60",
+        "property_uuid": "b34f3e0a-d1dd-443c-9753-bca3b9d2d1b8",
+        "created_at": "2024-01-22 03:08:50",
+        "updated_at": "2024-01-22 03:08:50"
+    },
+    {
+        "id": "71",
+        "owner_uuid": "59c208a3-4141-4b1a-987f-ca51efa78162",
+        "property_uuid": "db4bb755-7c14-4944-8e1a-345df53813af",
+        "created_at": "2024-01-23 22:40:16",
+        "updated_at": "2024-01-23 22:40:16"
+    },
+    {
+        "id": "72",
+        "owner_uuid": "d92cab71-0ea5-4796-b103-a667ff30bbd4",
+        "property_uuid": "25cf5130-acd2-48d6-a0ed-784c9b287476",
+        "created_at": "2024-01-23 22:46:00",
+        "updated_at": "2024-01-23 22:46:00"
+    },
+    {
+        "id": "73",
+        "owner_uuid": "99dd5be5-7331-4d5a-8dbe-2a0f22b7e597",
+        "property_uuid": "2750a9a2-d6fe-4b0d-831c-324106ec74eb",
+        "created_at": "2024-01-23 22:50:06",
+        "updated_at": "2024-01-23 22:50:06"
+    },
+    {
+        "id": "74",
+        "owner_uuid": "d06e379e-ce5f-4007-9562-8964eaf95f53",
+        "property_uuid": "ce81a34f-9260-4369-ac44-579aa90a9e30",
+        "created_at": "2024-01-23 22:53:34",
+        "updated_at": "2024-01-23 22:53:34"
+    },
+    {
+        "id": "75",
+        "owner_uuid": "bfcc5ce1-8889-4f40-9e1b-2246b55adb59",
+        "property_uuid": "7607d3bb-943b-40a3-a0ee-f016016cb594",
+        "created_at": "2024-01-23 22:59:50",
+        "updated_at": "2024-01-23 22:59:50"
+    },
+    {
+        "id": "76",
+        "owner_uuid": "060a4369-9235-4d5c-a897-8a8f04a67377",
+        "property_uuid": "f6aecdc2-d624-40e2-b89f-6a955906d923",
+        "created_at": "2024-01-23 23:09:18",
+        "updated_at": "2024-01-23 23:09:18"
+    },
+    {
+        "id": "77",
+        "owner_uuid": "78e5af92-3589-4ece-935e-eab0480df9a5",
+        "property_uuid": "841bdbb9-a539-4fc5-8e26-6b6363cf5539",
+        "created_at": "2024-01-23 23:11:33",
+        "updated_at": "2024-01-23 23:11:33"
+    },
+    {
+        "id": "78",
+        "owner_uuid": "167ff7f0-22d5-49ec-bb4d-2eb10172cf9b",
+        "property_uuid": "5cf280d8-4b5c-4959-93ee-c2f18285b18f",
+        "created_at": "2024-01-23 23:12:20",
+        "updated_at": "2024-01-23 23:12:20"
+    }
+]

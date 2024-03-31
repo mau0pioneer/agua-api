@@ -1,0 +1,150 @@
+[
+  {
+    "uuid": "4e0966f6-b022-49da-a803-77ca26187585",
+    "street_number": "4300"
+  },
+  {
+    "uuid": "f2c7dde8-636e-47ed-8f6f-e8c16ebe6701",
+    "street_number": "4302"
+  },
+  {
+    "uuid": "c2733014-512f-4864-aa1a-5a761323aea6",
+    "street_number": "4304"
+  },
+  {
+    "uuid": "a8a0473b-ad99-4ab6-ab13-883b872017b6",
+    "street_number": "4306"
+  },
+  {
+    "uuid": "f82bae35-aae3-4211-8478-e030b58a091e",
+    "street_number": "4308"
+  },
+  {
+    "uuid": "d71344d3-24db-4d0c-bcde-18e46de33646",
+    "street_number": "4310"
+  },
+  {
+    "uuid": "dd73df74-b0ce-4a29-a34f-b5c553999865",
+    "street_number": "4312"
+  },
+  {
+    "uuid": "2a495a71-1cd8-4057-bf84-e2a9aaf4e4c5",
+    "street_number": "4314"
+  },
+  {
+    "uuid": "afc632e1-46b0-411d-a97b-0a42683a23db",
+    "street_number": "4316"
+  },
+  {
+    "uuid": "3360388b-3d26-4dee-9996-e11cdcbcfe73",
+    "street_number": "4318"
+  },
+  {
+    "uuid": "3360388b-3d26-4dee-9996-e11cdcbcfe73",
+    "street_number": "4320"
+  },
+  {
+    "uuid": "7046c76c-9ee2-49cb-9a8c-75ab9d852e6a",
+    "street_number": "4322"
+  },
+  {
+    "uuid": "55b85477-d78a-427f-b6e9-7ed6efdfc0af",
+    "street_number": "1000"
+  },
+  {
+    "uuid": "5432d7e7-2fc3-49c9-9d06-58b8704965bd",
+    "street_number": "1002"
+  },
+  {
+    "uuid": "a1b86765-7da5-496e-8c12-389e164733c4",
+    "street_number": "1004"
+  },
+  {
+    "uuid": "d667a298-8e2e-4a3d-8c8b-bd4c2fce7e03",
+    "street_number": "1006"
+  },
+  {
+    "uuid": "29ee8a4c-80ec-49ae-83b9-8a5c61e12f16",
+    "street_number": "1008"
+  },
+  {
+    "uuid": "46c3fa8e-4536-4165-b302-2247b5accc0a",
+    "street_number": "1010"
+  },
+  {
+    "uuid": "57c1b249-6495-4ad1-bfe9-c7f39364bf8f",
+    "street_number": "1012"
+  },
+  {
+    "uuid": "a11f4ff5-f1de-417f-94bf-c3177dd54ffe",
+    "street_number": "1014"
+  },
+  {
+    "uuid": "cc31035d-f88a-4466-b458-a7e559e9ca92",
+    "street_number": "1016"
+  },
+  {
+    "uuid": "b1e77ebb-f5d0-4d08-8ac8-6e9690df4151",
+    "street_number": "4301"
+  },
+  {
+    "uuid": "7b91dff7-9828-4af5-a754-3a64cca2ba5d",
+    "street_number": "4303"
+  },
+  {
+    "uuid": "18ec9791-3cfc-44b2-8091-455f1c499462",
+    "street_number": "4305"
+  },
+  {
+    "uuid": "6d814b93-ed22-4da3-9474-80c74c1d3934",
+    "street_number": "4307"
+  },
+  {
+    "uuid": "00df1566-8c6e-406e-b904-40452f1fa987",
+    "street_number": "4309"
+  },
+  {
+    "uuid": "d3e0b16e-e4e5-4c05-969d-4d4df493770c",
+    "street_number": "4311"
+  },
+  {
+    "uuid": "40d479bc-68e7-4ed1-b4b1-831cb9404a1a",
+    "street_number": "4313"
+  },
+  {
+    "uuid": "2369b95e-0216-4db3-bef0-a21d377994fb",
+    "street_number": "4315"
+  },
+  {
+    "uuid": "804b2ec7-d65f-4b6c-a8f6-04320969bb48",
+    "street_number": "4317"
+  },
+  {
+    "uuid": "98b2b05e-d3b2-4707-8cf0-979ab3148c87",
+    "street_number": "4319"
+  },
+  {
+    "uuid": "7f407469-b4b8-4aad-812d-9a7ee51b2105",
+    "street_number": "4321"
+  },
+  {
+    "uuid": "f0ba4b72-7470-4660-9c0c-0f916359bf6f",
+    "street_number": "103"
+  },
+  {
+    "uuid": "ee7b8dd9-e272-4d55-bef4-96f6e80a4aad",
+    "street_number": "105"
+  },
+  {
+    "uuid": "d3d40654-87d1-4366-ab10-65cc24d13c9f",
+    "street_number": "107"
+  },
+  {
+    "uuid": "0ab3f4ac-61f7-4270-8693-7064f3a210d9",
+    "street_number": "109"
+  },
+  {
+    "uuid": "82d80e96-f326-40ef-a2cf-a12d6eb3bca6",
+    "street_number": "111"
+  }
+]
