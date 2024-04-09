@@ -34,6 +34,11 @@ class Contribution extends Model
         'deleted_at'
     ];
 
+    protected $appends = [
+        'neighbor_name',
+        'collector_name'
+    ];
+
     // rules para validación
     public static $rules = [
         'amount' => 'required|numeric',
@@ -55,6 +60,21 @@ class Contribution extends Model
                 $contribution->uuid = Uuid::uuid4()->toString();
             }
         });
+    }
+
+    public function getNeighborNameAttribute()
+    {
+        $firstname = $this->neighbor()->value('firstname');
+        $lastname = $this->neighbor()->value('lastname');
+
+        if(is_null($firstname) && is_null($lastname)) return null;
+
+        return $firstname . ' ' . $lastname;
+    }
+
+    public function getCollectorNameAttribute()
+    {
+        return $this->collector()->value('name');
     }
 
     public function neighbor()

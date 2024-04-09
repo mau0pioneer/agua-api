@@ -60,10 +60,42 @@ class NeighborAPIController extends APIController
         }
     }
 
+    public function update(Request $request, $uuid)
+    {
+        try {
+            $data = $this->getFormattedData($request->all());
+
+            $register = $this->repository->find($uuid);
+            if (!$register) {
+                return response()->json([
+                    'message' => 'Record not found.'
+                ], 404);
+            }
+
+            $phone_number = $data['phone_number'];
+
+            $error = $this->validateRules($request, $uuid, [
+                'phone_number' => 'required|string|min:10|max:10|regex:/^[0-9]{10}$/' . ($phone_number != $register->phone_number ? '|unique:neighbors,phone_number' : ''),
+                'firstname' => 'required',
+                'lastname' => 'required',
+            ]);
+            if ($error) return $error;
+        
+            // actualizar el registro en la base de datos
+            $register = $this->repository->update($uuid, $data);
+            // devolver los datos en formato JSON
+            return response()->json($register, 200);
+        } catch (\Exception $e) {
+            APIHelper::responseFailed([
+                'message' => 'Failed to update data.',
+            ], 500);
+        }
+    }
+
     public function getFullname($uuid)
     {
         try {
-            $neighbor = Neighbor::where('uuid', $uuid)->first(['firstname', 'lastname']);
+            $neighbor = Neighbor::where('uuid', $uuid)->first(['firstname', 'lastname', 'uuid']);
             return response()->json([
                 'fullname' => $neighbor->firstname . ' ' . $neighbor->lastname
             ], 200);

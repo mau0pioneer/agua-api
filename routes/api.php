@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', [DwellingAPIController::class, 'getDwellings2']);
+Route::get('/test23', [DwellingAPIController::class, 'getDwellings2']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -60,7 +60,7 @@ Route::group([], function () {
         Route::get('/print', [DwellingAPIController::class, 'getDwellings']);
         Route::post('/address', [DwellingAPIController::class, 'findFromAddress']);
         Route::get('/', [DwellingAPIController::class, 'index']);
-        Route::get('/{uuid}', [DwellingAPIController::class, 'find']);
+        Route::get('/{uuid}', [DwellingAPIController::class, 'show']);
         Route::put('/{uuid}', [DwellingAPIController::class, 'update']);
         Route::get('/{uuid}/title', [DwellingAPIController::class, 'getTitle']);
         Route::get('/{uuid}/periods', [DwellingAPIController::class, 'getPeriods']);
@@ -72,6 +72,9 @@ Route::group([], function () {
         Route::patch('/{uuid}/inhabited', [DwellingAPIController::class, 'changeInhabited']);
         Route::get('/{uuid}/neighbors-signatures', [DwellingAPIController::class, 'getNeigborsBySignatures']);
         Route::post('/{uuid}/contributions', [DwellingAPIController::class, 'storeContribution']);
+        Route::get('/{uuid}/last-contribution', [DwellingAPIController::class, 'getLastContribution']);
+
+        Route::post('/{uuid}/neighbors', [DwellingAPIController::class, 'storeNeighbor']);
     });
 
     // neighbors routes group
@@ -83,7 +86,9 @@ Route::group([], function () {
         Route::get('/{uuid}/fullname', [NeighborAPIController::class, 'getFullname']);
         Route::get('/{uuid}/phone-number', [NeighborAPIController::class, 'getPhoneNumber']);
         Route::post('/{uuid}/phone-number', [NeighborAPIController::class, 'updatePhoneNumber']);
+        
         Route::put('/{uuid}', [NeighborAPIController::class, 'update']);
+        Route::delete('/{uuid}', [NeighborAPIController::class, 'destroy']);
     });
 
     Route::group(['prefix' => 'collectors'], function () {

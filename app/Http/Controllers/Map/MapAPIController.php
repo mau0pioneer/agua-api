@@ -29,14 +29,14 @@ class MapAPIController extends Controller
 
         foreach ($dwellings as $dwelling) {
             $pendings_periods = $dwelling->periods->count() > 0;
-            $color = $pendings_periods ? 'yellow' : '#00d407';
+            $color = $pendings_periods ? ($dwelling->periods->count() > 2 ? 'red' : 'yellow') : '#00d407';
 
             if ($dwelling->contributions->count() === 0) $color = 'gray';
 
             $contributions[] = [
                 'color' => $color,
                 'coordinates_uuid' => $dwelling->coordinates_uuid,
-                'uuid' => $dwelling->uuid
+                'dwelling_uuid' => $dwelling->uuid
             ];
         }
 

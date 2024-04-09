@@ -38,7 +38,12 @@ class Dwelling extends Model
     ];
 
     protected $appends = [
-        'type_color'
+        'type_color',
+        'type_name',
+        'title',
+        'pending_periods',
+        'contributions_count',
+        'neighbors_count'
     ];
 
     public static $typeColors = [
@@ -46,6 +51,13 @@ class Dwelling extends Model
         '3' => '#1FAFB5',
         '2' => '#FC0E93',
         '1' => '#B188E4'
+    ];
+
+    public static $typeNames = [
+        '4' => 'Sextuplex',
+        '3' => 'Cuadruplex',
+        '2' => 'Dos niveles',
+        '1' => 'Un nivel'
     ];
 
     // Boot para que se valide si no se envía el campo 'uuid' se genere uno
@@ -64,8 +76,33 @@ class Dwelling extends Model
     public function getTypeColorAttribute()
     {
         $grayColor = '#919191';
-        //if ($this->inhabited === false) return $grayColor;
         return self::$typeColors[$this->type] ?? $grayColor;
+    }
+
+    public function getTypeNameAttribute()
+    {
+        return self::$typeNames[$this->type] ?? 'Desconocido';
+    }
+
+    public function getTitleAttribute()
+    {
+        $street_name = $this->street()->value('name');
+        return $street_name . ' ' . $this->street_number . ($this->interior_number ? ' ' . $this->interior_number : '');
+    }
+
+    public function getPendingPeriodsAttribute()
+    {
+        return $this->periods()->where('status', 'pending')->count();
+    }
+
+    public function getContributionsCountAttribute()
+    {
+        return $this->contributions()->count();
+    }
+
+    public function getNeighborsCountAttribute()
+    {
+        return $this->neighbors()->count();
     }
 
     public function contributions()
@@ -83,7 +120,7 @@ class Dwelling extends Model
         return $this->hasMany(Period::class, 'dwelling_uuid', 'uuid');
     }
 
-    public function pendingPeriods()
+    public function pendingPeriodss()
     {
         return $this->hasMany(Period::class, 'dwelling_uuid', 'uuid')->where('status', 'pending');
     }

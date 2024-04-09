@@ -28,7 +28,7 @@
           </th>
           <td>
             <ul>
-              @foreach ($dwelling->pendingPeriods as $period)
+              @foreach ($dwelling->pendingPeriodss as $period)
                 <li>
                   {{ $period->year }}-{{ $period->getMonth() }}
                 </li> 

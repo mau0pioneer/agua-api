@@ -11,6 +11,13 @@ class Repository
     public function all($where = [])
     {
         try {
+            // validar que el where solo tenga valores válidos que coincidan con los campos de la tabla
+            $fillable = $this->model->getFillable();
+            
+            $where = array_filter($where, function ($key) use ($fillable) {
+                return in_array($key, $fillable);
+            }, ARRAY_FILTER_USE_KEY);
+
             // Realiza una consulta where tomando el modelo que se asigna al momento de heredar está clase padre.
             return $this->model::where($where)->get();
         } catch (\Exception $ex) {
@@ -53,14 +60,12 @@ class Repository
         }
     }
 
-    public function delete($id)
+    public function delete($uuid)
     {
-        $result = false;
-
         try {
-            $register = $this->model->find($id);
-            $result = $register->id && $register->delete();
-            return $result;
+            $register = $this->model::where('uuid', $uuid)->first();
+            if (is_null($register)) return null;
+            return $register->delete();
         } catch (\Exception $ex) {
             $this->logError($ex);
             throw $ex;

@@ -21,18 +21,47 @@ class DwellingAPIController extends APIController
         $this->repository = $dwellingRepository;
     }
 
-    public function getDwellings2(){
-        // obtener las viviendas que deban mas de 2 periodos pendientes y tengan al menos una contribución
+    public function getDwellings2()
+    {
+        // obtener las viviendas que tangan al menos una contribución
+        $dwellings = Dwelling::whereHas('contributions')->get();
+        $dwellingsWithDebt = [];
+        $data = [];
 
-        $dwellings = Dwelling::whereHas('periods', function ($query) {
-            $query->select('dwelling_uuid')
-                  ->where('status', 'pending')
-                  ->groupBy('dwelling_uuid')
-                  ->havingRaw('COUNT(id) > 2');
-        })->whereHas('contributions')->get();
-        
+        foreach ($dwellings as $dwelling) {
+            // obtener el ultimo period de la vivienda con estatus pagado
+            $lastPeriod = $dwelling->periods()->where('status', 'paid')->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
+            if (!$lastPeriod) {
+                $dwellingsWithDebt[] = $dwelling;
+                continue;
+            }
 
-        return view('latest', compact('dwellings'));
+            // comparar el mes y año del ultimo periodo pagado con el mes y año actual
+            $now = date('Y-m-d');
+            $date_period = $lastPeriod->year . '-' . $lastPeriod->month . '-01';
+
+
+            // obtener en una variable los meses de diferencia entre la fecha actual y la fecha del ultimo periodo pagado
+            $months = (int)date('m', strtotime($now)) - (int)date('m', strtotime($date_period));
+
+            // pasar de negativo a positivo
+            $months = intval(abs($months));
+
+            if ($months > 2) {
+                $dwellingsWithDebt[] = $dwelling;
+                $data[] = [
+                    'CALLE' => strtoupper($dwelling->street->name),
+                    'NUMERO' => $dwelling->street_number,
+                    'INTERIOR' => $dwelling->interior_number,
+                    'NOMBRE' => strtoupper($dwelling->neighbors()->first()->firstname . ' ' . $dwelling->neighbors()->first()->lastname),
+                    'TELEFONO' => $dwelling->neighbors()->first()->phone_number,
+                    'ULTIMO_PAGO' => $lastPeriod->getMonth() . ' ' . $lastPeriod->year,
+                ];
+            }
+        }
+
+        return $data;
+        return view('latest', ['dwellings' => $dwellingsWithDebt]);
     }
 
     public function getTitle($uuid)
@@ -55,48 +84,15 @@ class DwellingAPIController extends APIController
         }
     }
 
-    public function find($uuid)
-    {
-        try {
-            // Obtiene un registro a partir del uuid y añade el atributo title compuesto por el nombre de la calle, número exterior e interior
-            $dwelling = Dwelling::where('uuid', $uuid)->with([
-                'street' => function ($query) {
-                    // obtener solo el nombre de la calle y uuid de la calle
-                    $query->select(['uuid', 'name']);
-                },
-            ])->first(['id', 'uuid', 'street_uuid', 'street_number', 'interior_number', 'inhabited', 'type', 'comments']);
-
-            return response()->json([
-                'id' => $dwelling->id,
-                'uuid' => $dwelling->uuid,
-                'street_uuid' => $dwelling->street_uuid,
-                'street_number' => $dwelling->street_number,
-                'interior_number' => $dwelling->interior_number,
-                'inhabited' => $dwelling->inhabited,
-                'type' => $dwelling->type,
-                'type_color' => $dwelling->type_color,
-                'comments' => $dwelling->comments,
-                'street_name' => $dwelling->street->name,
-                'pending_periods' => $dwelling->periods()->where('status', 'pending')->count(),
-                'contributions_count' => $dwelling->contributions()->count(),
-            ], 200);
-        } catch (\Exception $ex) {
-            APIHelper::responseFailed([
-                'message' => 'Failed to get data.',
-                'errors' => $ex->getMessage()
-            ], 500);
-        }
-    }
-
     public function changeInhabited(Request $request, $uuid)
     {
         try {
-            $dwelling = Dwelling::where('uuid', $uuid)->first(['id', 'inhabited', 'type']);
+            $dwelling = Dwelling::where('uuid', $uuid)->first();
             $dwelling->inhabited = $request->inhabited !== null ?
                 $request->inhabited : !$dwelling->inhabited;
             $dwelling->save();
 
-            return response()->json($dwelling, 200);
+            return response()->json($dwelling->inhabited, 200);
         } catch (\Exception $e) {
             APIHelper::responseFailed([
                 'message' => 'Failed to update data.',
@@ -124,10 +120,12 @@ class DwellingAPIController extends APIController
     {
         try {
             $dwelling = Dwelling::where('uuid', $uuid)->first(['uuid']);
-            $contributions = $dwelling->contributions()->get(['contributions.uuid', 'amount', 'folio', 'comments', 'created_at', 'neighbor_uuid']);
+            $contributions = $dwelling->contributions()
+                ->orderBy('created_at', 'desc')
+                ->get(['contributions.uuid', 'amount', 'folio', 'comments', 'created_at', 'neighbor_uuid', 'status', 'collector_uuid']);
             return response()->json($contributions, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -264,7 +262,7 @@ class DwellingAPIController extends APIController
     public function update(Request $request, $uuid)
     {
         try {
-            $dwelling = Dwelling::where('uuid', $uuid)->first();
+            $dwelling = $this->repository->find($uuid);
             $dwelling->update($request->all());
 
             return response()->json($dwelling, 200);
@@ -490,5 +488,46 @@ class DwellingAPIController extends APIController
         })->get();
 
         return view('acuse', compact('dwellings'));
+    }
+
+    public function getLastContribution($uuid)
+    {
+        try {
+            $dwelling = Dwelling::where('uuid', $uuid)->first();
+            $period = $dwelling->periods()->where('status', 'paid')->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
+            return response()->json($period, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to get data.',
+                'errors' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function storeNeighbor(Request $request, $uuid)
+    {
+        try {
+            $dwelling = $this->repository->find($uuid);
+
+            // validar si existe
+            if (is_null($dwelling->id)) {
+                return response()->json([
+                    'message' => 'No se encontró la vivienda.'
+                ], 404);
+            }
+
+            // validar el vecino
+            if ($response = $this->validateRules($request, null, Neighbor::$rules, 'neighbors'))
+                return $response;
+
+            $neighbor = Neighbor::create($request->all());
+            $dwelling->neighbors()->attach($neighbor->uuid);
+            return response()->json($neighbor, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to store data.',
+                'errors' => $e->getMessage()
+            ], 500);
+        }
     }
 }

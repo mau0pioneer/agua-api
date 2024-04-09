@@ -51,6 +51,18 @@ class PeriodsSeeder extends Seeder
                 $period->status = 'pending';
                 $period->save();
             }
+
+            $period = Period::firstOrNew([
+                'month' => '04',
+                'year' => 2024,
+                'dwelling_uuid' => $dwelling->uuid,
+            ]);
+
+            if (!$period->id) {
+                $period->amount = 100;
+                $period->status = 'pending';
+                $period->save();
+            }
         }
     }
 }

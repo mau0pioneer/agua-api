@@ -42,7 +42,7 @@ class Neighbor extends Model
     public static $rules = [
         'firstname' => 'required|string',
         'lastname' => 'required|string',
-        'phone_number' => 'string|nullable|min:10|max:10',
+        'phone_number' => 'required|string|min:10|max:10|unique:neighbors,phone_number|regex:/^[0-9]{10}$/',
         'prefix' => 'string|nullable',
         'alias' => 'string|nullable',
         'access_code' => 'string|nullable',

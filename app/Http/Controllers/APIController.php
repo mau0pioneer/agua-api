@@ -17,7 +17,7 @@ class APIController extends Controller
     public function index(Request $request)
     {
         try {
-            $data = $this->repository->all($request->all(), $request->get('white_list') ?? []);
+            $data = $this->repository->all($request->all());
             // devolver los datos en formato JSON
             return response()->json($data, 200);
         } catch (\Exception $e) {
@@ -71,6 +71,10 @@ class APIController extends Controller
         $this->validateRules($request, $uuid);
         try {
             $data = $this->getFormattedData($request->all());
+
+            $error = $this->validateRules($request, $uuid);
+            if ($error) return $error;
+        
             // actualizar el registro en la base de datos
             $register = $this->repository->update($uuid, $data);
             // devolver los datos en formato JSON
@@ -82,22 +86,52 @@ class APIController extends Controller
         }
     }
 
-    protected function validateRules($request, $uuid = null)
+    public function destroy($uuid)
     {
-        $rules = $this->repository->getRules() ?? [];
-        if (empty($rules)) return;
+        try {
+            // eliminar el registro de la base de datos
+            $deleted = $this->repository->delete($uuid);
 
-        $rules['uuid'] = is_null($uuid) ? 'nullable|unique:' . $this->repository->getTable().',uuid' : 'required|exists:' . $this->repository->getTable() . ',uuid';
+            // validar si el registro no se encontró
+            if (is_null($deleted)) {
+                return response()->json([
+                    'message' => 'Data not found.',
+                    'error' => true
+                ], 404);
+            }
 
+            // devolver los datos en formato JSON
+            return response()->json([
+                'message' => 'Data deleted successfully.',
+                'data' => $deleted
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete data.',
+                'errors' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    protected function validateRules($request, $uuid = null, $rules = [], $table = '')
+    {
+        $rules = !empty($rules) ? $rules : $this->repository->getRules();
+        $table = !empty($table) ? $table : $this->repository->getTable();
+
+        // si el uuid es nulo, entonces el campo uuid es opcional y único
+        $rules['uuid'] = is_null($uuid) ? 'exists|unique:' . $table . ',uuid' : 'required|nullable:' . $table . ',uuid';
+
+        // si el uuid no es nulo, entonces se agrega al request
         if (!is_null($uuid)) $request->merge(['uuid' => $uuid]);
 
         // validar los datos de entrada
         $validator = Validator::make($request->all(), $rules);
+
         // comprobar si la validación falla
         if ($validator->fails()) {
             // devolver los errores en formato JSON
-            APIHelper::responseFailed([
-                'message' => 'Failed to create data.',
+            return response()->json([
+                'message' => 'Validation failed.',
                 'errors' => $validator->errors()
             ], 422);
         }

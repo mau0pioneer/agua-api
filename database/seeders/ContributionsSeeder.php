@@ -186,7 +186,11 @@ class ContributionsSeeder extends Seeder
                         'DICIEMBRE' => '12',
                     ];
                     $monthsInverted = array_flip($months);
-                    return $monthsInverted[$period->month] . '-' . $period->year;
+
+                    $monthLower = strtolower($monthsInverted[$period->month]);
+                    $month = ucfirst($monthLower);
+
+                    return $month . '-' . $period->year;
                 }, $periods))
             ) : 'Reconexión';
             $contribution->comments = $contribution->comments . '. ' . $data['DESCRIPCION'];
