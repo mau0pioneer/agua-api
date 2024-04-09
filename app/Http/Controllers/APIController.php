@@ -34,16 +34,15 @@ class APIController extends Controller
         try {
             $data = $this->repository->find($uuid);
 
-            if (is_null($data)) {
-                APIHelper::responseFailed([
-                    'message' => 'Data not found.',
-                ], 404);
-            }
+            if (is_null($data->id)) return response()->json([
+                'message' => 'Data not found.',
+                'error' => true
+            ], 404);
 
             // devolver los datos en formato JSON
             return response()->json($data, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -74,7 +73,7 @@ class APIController extends Controller
 
             $error = $this->validateRules($request, $uuid);
             if ($error) return $error;
-        
+
             // actualizar el registro en la base de datos
             $register = $this->repository->update($uuid, $data);
             // devolver los datos en formato JSON

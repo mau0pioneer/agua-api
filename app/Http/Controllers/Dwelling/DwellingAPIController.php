@@ -294,6 +294,7 @@ class DwellingAPIController extends APIController
         try {
             DB::beginTransaction();
             $dwelling = Dwelling::where('uuid', $uuid)->first();
+
             $neighbor_uuid = $request->get('neighbor_uuid');
 
             if ($neighbor_uuid) {
@@ -493,9 +494,12 @@ class DwellingAPIController extends APIController
     public function getLastContribution($uuid)
     {
         try {
-            $dwelling = Dwelling::where('uuid', $uuid)->first();
-            $period = $dwelling->periods()->where('status', 'paid')->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
-            return response()->json($period, 200);
+            $period = $this->repository->getLastPeriod($uuid);
+            if (!$period->month || !$period->year) {
+                return response()->json("No hay registro.", 200);
+            }
+
+            return response()->json(strtolower("{$period->getMonth()} {$period->year}"), 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Failed to get data.',

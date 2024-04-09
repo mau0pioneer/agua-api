@@ -22,12 +22,14 @@ class CollectorAPIController extends APIController
     public function storeContribution(Request $request)
     {
         $dwelling_uuid = $request->get('dwelling_uuid');
+        $neighbor_uuid = $request->get('neighbor_uuid');
         $collector_email = $request->get('collector_email');
         $periods = $request->get('periods');
         $amount = $request->get('amount');
         $concept = $request->get('concept');
         $comments = $request->get('comments');
         $contribution_uuid = $request->get('contribution_uuid');
+        $collector_uuid = $request->get('collector_uuid');
 
         try {
             DB::beginTransaction();
@@ -50,6 +52,10 @@ class CollectorAPIController extends APIController
                 ], 404);
             }
 
+            if($collector_uuid) {
+                $collector = Collector::where('uuid', $collector_uuid)->first();
+            }
+
             // validar que la aportación exista
             $contribution = Contribution::where('uuid', $contribution_uuid)->first();
             if (!$contribution) {
@@ -62,6 +68,8 @@ class CollectorAPIController extends APIController
             $contribution->amount = $amount;
             $contribution->comments = $comments;
             $contribution->collector_uuid = $collector->uuid;
+            $contribution->dwelling_uuid = $dwelling->uuid;
+            $contribution->neighbor_uuid = $neighbor_uuid;
             $contribution->save();
 
             foreach ($periods as $period_uuid) {
