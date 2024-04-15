@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test23', [DwellingAPIController::class, 'getDwellings2']);
+Route::get('/send', [DwellingAPIController::class, 'send']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

@@ -10,6 +10,7 @@ use App\Models\Dwelling;
 use App\Models\Neighbor;
 use App\Models\Period;
 use App\Repositories\DwellingRepository;
+use App\Services\SendGridService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,6 +19,17 @@ class DwellingAPIController extends APIController
     public function __construct(DwellingRepository $dwellingRepository)
     {
         $this->repository = $dwellingRepository;
+    }
+
+    public function send()
+    {
+        try {
+            $sendGridService = new SendGridService();
+            $send = $sendGridService->sendEmail('mtz0mau2002@gmail.com', 'hola mundo2', '<strong>Hola mundo</strong>');
+        } catch (\Throwable $th) {
+            echo $th->getMessage();
+        }
+        return response()->json('Email enviado'. ' ' . json_encode($send), 200);
     }
 
     public function getDwellings2()

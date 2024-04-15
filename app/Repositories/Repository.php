@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Services\SendGridService;
 use Illuminate\Support\Facades\Log;
 
 class Repository
@@ -102,5 +103,7 @@ class Repository
     protected function logError($ex)
     {
         Log::error($this->model::class . ' -' . ' all - line:' . $ex->getLine() . ' - ' . $ex->getMessage());
+        $sendGridServicio = new SendGridService();
+        $sendGridServicio->sendEmail('mtz0mau2002@gmail.com', 'Error en el sistema', $this->model::class . ' -' . ' all - line:' . $ex->getLine() . ' - ' . $ex->getMessage());
     }
 }
