@@ -533,7 +533,6 @@ class DwellingAPIController extends APIController
             }
         }
 
-        return $data;
         return view('latest', ['dwellings' => $dwellingsWithDebt]);
     }
 }
