@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test23', [DwellingAPIController::class, 'getDwellings2']);
+Route::get('/test', [DwellingAPIController::class, 'getDwellings2']);
 Route::get('/send', [DwellingAPIController::class, 'send']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -33,7 +33,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/login', [LoginController::class, 'login']);
-
     Route::group(['middleware' => 'jwt'], function () {
         Route::get('/logout', [LogoutController::class, 'logout']);
         Route::get('/user', [LoginController::class, 'getUserByToken']);

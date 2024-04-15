@@ -29,50 +29,8 @@ class DwellingAPIController extends APIController
         } catch (\Throwable $th) {
             echo $th->getMessage();
         }
+
         return response()->json('Email enviado' . ' ' . json_encode($send), 200);
-    }
-
-    public function getDwellings2()
-    {
-        // obtener las viviendas que tangan al menos una contribución
-        $dwellings = Dwelling::whereHas('contributions')->get();
-        $dwellingsWithDebt = [];
-        $data = [];
-
-        foreach ($dwellings as $dwelling) {
-            // obtener el ultimo period de la vivienda con estatus pagado
-            $lastPeriod = $dwelling->periods()->where('status', 'paid')->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
-            if (!$lastPeriod) {
-                $dwellingsWithDebt[] = $dwelling;
-                continue;
-            }
-
-            // comparar el mes y año del ultimo periodo pagado con el mes y año actual
-            $now = date('Y-m-d');
-            $date_period = $lastPeriod->year . '-' . $lastPeriod->month . '-01';
-
-
-            // obtener en una variable los meses de diferencia entre la fecha actual y la fecha del ultimo periodo pagado
-            $months = (int)date('m', strtotime($now)) - (int)date('m', strtotime($date_period));
-
-            // pasar de negativo a positivo
-            $months = intval(abs($months));
-
-            if ($months > 2) {
-                $dwellingsWithDebt[] = $dwelling;
-                $data[] = [
-                    'CALLE' => strtoupper($dwelling->street->name),
-                    'NUMERO' => $dwelling->street_number,
-                    'INTERIOR' => $dwelling->interior_number,
-                    'NOMBRE' => strtoupper($dwelling->neighbors()->first()->firstname . ' ' . $dwelling->neighbors()->first()->lastname),
-                    'TELEFONO' => $dwelling->neighbors()->first()->phone_number,
-                    'ULTIMO_PAGO' => $lastPeriod->getMonth() . ' ' . $lastPeriod->year,
-                ];
-            }
-        }
-
-        return $data;
-        return view('latest', ['dwellings' => $dwellingsWithDebt]);
     }
 
     public function getTitle($uuid)
@@ -88,7 +46,7 @@ class DwellingAPIController extends APIController
                 'title' => $dwelling->street->name . ' ' . $dwelling->street_number . ' ' . $dwelling->interior_number
             ], 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -98,30 +56,11 @@ class DwellingAPIController extends APIController
     public function changeInhabited(Request $request, $uuid)
     {
         try {
-            $dwelling = Dwelling::where('uuid', $uuid)->first();
-            $dwelling->inhabited = $request->inhabited !== null ?
-                $request->inhabited : !$dwelling->inhabited;
-            $dwelling->save();
-
+            $dwelling = $this->repository->changeInhabited($uuid, $request->get('inhabited'));
             return response()->json($dwelling->inhabited, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            return response()->json([
                 'message' => 'Failed to update data.',
-                'errors' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function getNeigborsBySignatures($uuid)
-    {
-        try {
-            $dwelling = Dwelling::where('uuid', $uuid)->first(['uuid']);
-            $neighbors = $dwelling->neighbors()->get(['neighbors.uuid', 'firstname', 'lastname']);
-
-            return response()->json($neighbors, 200);
-        } catch (\Exception $e) {
-            APIHelper::responseFailed([
-                'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
             ], 500);
         }
@@ -130,10 +69,7 @@ class DwellingAPIController extends APIController
     public function getContributions($uuid)
     {
         try {
-            $dwelling = Dwelling::where('uuid', $uuid)->first(['uuid']);
-            $contributions = $dwelling->contributions()
-                ->orderBy('created_at', 'desc')
-                ->get(['contributions.uuid', 'amount', 'folio', 'comments', 'created_at', 'neighbor_uuid', 'status', 'collector_uuid']);
+            $contributions = $this->repository->getContributions($uuid);
             return response()->json($contributions, 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -146,28 +82,10 @@ class DwellingAPIController extends APIController
     public function getNeighbors($uuid)
     {
         try {
-            $dwelling = Dwelling::where('uuid', $uuid)->first();
-            $neighbors = $dwelling->neighbors()->get(['uuid', 'firstname', 'lastname', 'phone_number']);
+            $neighbors = $this->repository->getNeighbors($uuid);
             return response()->json($neighbors, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
-                'message' => 'Failed to get data.',
-                'errors' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function getNeighborsFromContributions($uuid)
-    {
-        try {
-            $dwelling = Dwelling::where('uuid', $uuid)->first();
-            // obtener los vecinos que han hecho contribuciones a la vivienda pero que no estén duplicados
-            $neighbors = $dwelling->neighbors()->whereHas('contributions', function ($query) use ($uuid) {
-                $query->where('dwelling_uuid', $uuid);
-            })->get(['neighbors.uuid', 'firstname', 'lastname', 'phone_number'])->unique('uuid');
-            return response()->json($neighbors, 200);
-        } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -177,12 +95,10 @@ class DwellingAPIController extends APIController
     public function getPeriods($uuid)
     {
         try {
-            $dwelling = Dwelling::where('uuid', $uuid)->first();
-            // obtener los periodos de la vivienda ordenados por año (campo: year) y mes (campo: month -> 01, 02, 03, ..., 12)
-            $periods = $dwelling->periods()->orderBy('year', 'desc')->orderBy('month', 'desc')->get(['uuid', 'year', 'month', 'status', 'amount']);
+            $periods = $this->repository->getPeriods($uuid);
             return response()->json($periods, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -192,12 +108,10 @@ class DwellingAPIController extends APIController
     public function getPendingPeriods($uuid)
     {
         try {
-            $dwelling = Dwelling::where('uuid', $uuid)->first();
-            // obtener los periodos de la vivienda que tengan el estatus pendiente
-            $periods = $dwelling->periods()->where('status', 'pending')->get(['uuid', 'year', 'month', 'status', 'amount']);
+            $periods = $this->repository->getPendingPeriods($uuid);
             return response()->json($periods, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -245,30 +159,35 @@ class DwellingAPIController extends APIController
         }
     }
 
-    public function profe()
+    public function getNeigborsBySignatures($uuid)
     {
-        // obtener las viviendas que tengan periodos pendientes y con un whereHas se obtienen solo las viviendas que tengan al menos una contribución hecha por un collector con uuid 1
-        $dwellings = Dwelling::whereHas('periods', function ($query) {
-            $query->where('status', 'pending');
-        })->whereHas('contributions', function ($query) {
-            $query->where('collector_uuid', '6c94521c-c898-4db2-ad78-20ee32ae6fd0');
-        })->get();
-
-        $dwellings = $dwellings->groupBy('street_uuid');
-
-        return view('dwellings', ['dwellings' => $dwellings]);
+        try {
+            $dwelling = Dwelling::where('uuid', $uuid)->first(['uuid']);
+            $neighbors = $dwelling->neighbors()->get(['neighbors.uuid', 'firstname', 'lastname']);
+            return response()->json($neighbors, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to get data.',
+                'errors' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function profet()
+    public function getNeighborsFromContributions($uuid)
     {
-        // obtener los vecinos que no cuenten con numero de telefono y agruparlos por vivienda y calle
-        $dwellings = Dwelling::whereHas('neighbors', function ($query) {
-            $query->whereNull('phone_number');
-        })->get();
-
-        // agrupar las viviendas por calle junto con el nombre de la calle
-        $streetsUuids = $dwellings->groupBy('street_uuid');
-        return view('profet', ['streetsUuids' => $streetsUuids]);
+        try {
+            $dwelling = Dwelling::where('uuid', $uuid)->first();
+            // obtener los vecinos que han hecho contribuciones a la vivienda pero que no estén duplicados
+            $neighbors = $dwelling->neighbors()->whereHas('contributions', function ($query) use ($uuid) {
+                $query->where('dwelling_uuid', $uuid);
+            })->get(['neighbors.uuid', 'firstname', 'lastname', 'phone_number'])->unique('uuid');
+            return response()->json($neighbors, 200);
+        } catch (\Exception $e) {
+            APIHelper::responseFailed([
+                'message' => 'Failed to get data.',
+                'errors' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function update(Request $request, $uuid)
@@ -507,9 +426,11 @@ class DwellingAPIController extends APIController
     {
         try {
             $period = $this->repository->getLastPeriod($uuid);
+
             if (is_null($period)) return response()->json([
                 'message' => 'No se encontró la vivienda.'
             ], 404);
+
             return response()->json([
                 'message' => strtolower("{$period->getMonth()} {$period->year}")
             ], 200);
@@ -545,5 +466,74 @@ class DwellingAPIController extends APIController
                 'errors' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function profe()
+    {
+        // obtener las viviendas que tengan periodos pendientes y con un whereHas se obtienen solo las viviendas que tengan al menos una contribución hecha por un collector con uuid 1
+        $dwellings = Dwelling::whereHas('periods', function ($query) {
+            $query->where('status', 'pending');
+        })->whereHas('contributions', function ($query) {
+            $query->where('collector_uuid', '6c94521c-c898-4db2-ad78-20ee32ae6fd0');
+        })->get();
+
+        $dwellings = $dwellings->groupBy('street_uuid');
+
+        return view('dwellings', ['dwellings' => $dwellings]);
+    }
+
+    public function profet()
+    {
+        // obtener los vecinos que no cuenten con numero de telefono y agruparlos por vivienda y calle
+        $dwellings = Dwelling::whereHas('neighbors', function ($query) {
+            $query->whereNull('phone_number');
+        })->get();
+
+        // agrupar las viviendas por calle junto con el nombre de la calle
+        $streetsUuids = $dwellings->groupBy('street_uuid');
+        return view('profet', ['streetsUuids' => $streetsUuids]);
+    }
+
+    public function getDwellings2()
+    {
+        // obtener las viviendas que tangan al menos una contribución
+        $dwellings = Dwelling::whereHas('contributions')->get();
+        $dwellingsWithDebt = [];
+        $data = [];
+
+        foreach ($dwellings as $dwelling) {
+            // obtener el ultimo period de la vivienda con estatus pagado
+            $lastPeriod = $dwelling->periods()->where('status', 'paid')->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
+            if (!$lastPeriod) {
+                $dwellingsWithDebt[] = $dwelling;
+                continue;
+            }
+
+            // comparar el mes y año del ultimo periodo pagado con el mes y año actual
+            $now = date('Y-m-d');
+            $date_period = $lastPeriod->year . '-' . $lastPeriod->month . '-01';
+
+
+            // obtener en una variable los meses de diferencia entre la fecha actual y la fecha del ultimo periodo pagado
+            $months = (int)date('m', strtotime($now)) - (int)date('m', strtotime($date_period));
+
+            // pasar de negativo a positivo
+            $months = intval(abs($months));
+
+            if ($months > 2) {
+                $dwellingsWithDebt[] = $dwelling;
+                $data[] = [
+                    'CALLE' => strtoupper($dwelling->street->name),
+                    'NUMERO' => $dwelling->street_number,
+                    'INTERIOR' => $dwelling->interior_number,
+                    'NOMBRE' => strtoupper($dwelling->neighbors()->first()->firstname . ' ' . $dwelling->neighbors()->first()->lastname),
+                    'TELEFONO' => $dwelling->neighbors()->first()->phone_number,
+                    'ULTIMO_PAGO' => $lastPeriod->getMonth() . ' ' . $lastPeriod->year,
+                ];
+            }
+        }
+
+        return $data;
+        return view('latest', ['dwellings' => $dwellingsWithDebt]);
     }
 }
