@@ -124,7 +124,7 @@ class APIController extends Controller
         if (!is_null($uuid)) $data['uuid'] = $uuid;
 
         // validar los datos de entrada
-        $validator = Validator::make($request, $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         // comprobar si la validación falla
         if ($validator->fails()) {
