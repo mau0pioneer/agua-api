@@ -55,11 +55,7 @@ class AdminController extends Controller
     public function showNeighbor($uuid)
     {
         $neighbor = Neighbor::where('uuid', $uuid)->first();
-
-        if (!$neighbor) {
-            return redirect()->route('admin.neighbors')->with('error', 'Vecino no encontrado');
-        }
-
+        if (!$neighbor) return redirect()->route('admin.neighbors')->with('error', 'Vecino no encontrado');
         return view('admin.show-neighbor', compact('neighbor'));
     }
 

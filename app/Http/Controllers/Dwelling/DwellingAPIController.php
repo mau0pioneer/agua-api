@@ -521,7 +521,7 @@ class DwellingAPIController extends APIController
             }
 
             // validar el vecino
-            if ($response = $this->validateRules($request, null, Neighbor::$rules, 'neighbors'))
+            if ($response = $this->validateRules($request->all(), null, Neighbor::$rules, 'neighbors'))
                 return $response;
 
             $neighbor = Neighbor::create($request->all());

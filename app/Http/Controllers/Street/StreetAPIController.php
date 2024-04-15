@@ -17,23 +17,20 @@ class StreetAPIController extends APIController
     public function search(Request $request)
     {
         $query = $request->get('query');
-        $streets = Street::where("name", "like", "%{$query}%")->get();
+        $streets = $this->repository->getByName($query);
         return response()->json($streets);
     }
 
     public function getDwellings($uuid)
     {
-        $street = Street::where('uuid', $uuid)->first();
-        $dwellings = $street->dwellings()->get();
+        $dwellings = $this->repository->getDwellings($uuid);
         return response()->json($dwellings);
     }
 
     public function getStreeNumbers($uuid)
     {
-        // obtener las viviendas de la calle con el uuid de la calle y mostrar solo los numeros de las viviendas sin repetir
         $street = Street::where('uuid', $uuid)->first();
         $streetNumbers = $street->dwellings()->select('street_number')->distinct()->get();
-
         return response()->json($streetNumbers);
     }
 }

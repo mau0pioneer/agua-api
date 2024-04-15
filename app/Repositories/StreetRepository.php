@@ -10,4 +10,15 @@ class StreetRepository extends Repository
   {
     $this->model = $street;
   }
+
+  public function getByName($name)
+  {
+    return $this->model->where('name', 'like', "%{$name}%")->get();
+  }
+
+  public function getDwellings($uuid)
+  {
+    $street = $this->find($uuid);
+    return $street->dwellings()->get();
+  }
 }

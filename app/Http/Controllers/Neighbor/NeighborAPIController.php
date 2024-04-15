@@ -21,7 +21,6 @@ class NeighborAPIController extends APIController
     public function store(Request $request)
     {
         $this->validateRules($request);
-
         try {
             DB::beginTransaction();
             $data = $this->getFormattedData($request->all());
