@@ -520,11 +520,7 @@ class DwellingAPIController extends APIController
                 ], 404);
             }
 
-            // validar el vecino
-            $data = $request->all();
-            // convertir en arreglo asociativo
-            $data = json_decode(json_encode($data), true);
-            if ($response = $this->validateRules($data, null, Neighbor::$rules, 'neighbors'))
+            if ($response = $this->validateRules($request, null, Neighbor::$rules, 'neighbors'))
                 return $response;
 
             $neighbor = Neighbor::create($request->all());

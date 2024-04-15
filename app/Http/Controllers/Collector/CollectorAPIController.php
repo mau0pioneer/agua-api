@@ -22,7 +22,7 @@ class CollectorAPIController extends APIController
         PeriodRepository $periodRepository
     ) {
         try {
-            $errors = $this->validateRules($request->all(), null, [
+            $errors = $this->validateRules($request, null, [
                 'dwelling_uuid' => 'required|uuid|exists:dwellings,uuid',
                 'neighbor_uuid' => 'required|uuid|exists:neighbors,uuid',
                 'collector_email' => 'required|email|exists:collectors,email',

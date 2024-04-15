@@ -112,7 +112,7 @@ class APIController extends Controller
         }
     }
 
-    protected function validateRules($data = [], $uuid = null, $rules = [], $table = '')
+    protected function validateRules($request, $uuid = null, $rules = [], $table = '')
     {
         $rules = !empty($rules) ? $rules : $this->repository->getRules();
         $table = !empty($table) ? $table : $this->repository->getTable();
@@ -124,7 +124,7 @@ class APIController extends Controller
         if (!is_null($uuid)) $data['uuid'] = $uuid;
 
         // validar los datos de entrada
-        $validator = Validator::make($data, $rules);
+        $validator = Validator::make($request, $rules);
 
         // comprobar si la validación falla
         if ($validator->fails()) {
