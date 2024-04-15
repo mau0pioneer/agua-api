@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Collector;
 
-use App\Helpers\APIHelper;
 use App\Http\Controllers\APIController;
-use App\Models\Collector;
-use App\Models\Contribution;
-use App\Models\Dwelling;
-use App\Models\Period;
 use App\Repositories\CollectorRepository;
+use App\Repositories\ContributionRepository;
+use App\Repositories\PeriodRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -19,78 +16,62 @@ class CollectorAPIController extends APIController
         $this->repository = $collectorRepository;
     }
 
-    public function storeContribution(Request $request)
-    {
-        $dwelling_uuid = $request->get('dwelling_uuid');
-        $neighbor_uuid = $request->get('neighbor_uuid');
-        $collector_email = $request->get('collector_email');
-        $periods = $request->get('periods');
-        $amount = $request->get('amount');
-        $concept = $request->get('concept');
-        $comments = $request->get('comments');
-        $contribution_uuid = $request->get('contribution_uuid');
-        $collector_uuid = $request->get('collector_uuid');
-
+    public function storeContribution(
+        Request $request,
+        ContributionRepository $contributionRepository,
+        PeriodRepository $periodRepository
+    ) {
         try {
+            $errors = $this->validateRules($request->all(), null, [
+                'dwelling_uuid' => 'required|uuid|exists:dwellings,uuid',
+                'neighbor_uuid' => 'required|uuid|exists:neighbors,uuid',
+                'collector_email' => 'required|email|exists:collectors,email',
+                'periods' => 'required|array',
+                'amount' => 'required|numeric',
+                'concept' => 'required|string',
+                'comments' => 'nullable|string',
+                'contribution_uuid' => 'required|uuid|exists:contributions,uuid',
+                'collector_uuid' => 'nullable|uuid|exists:collectors,uuid'
+            ]);
+            if ($errors) return response()->json($errors, 400);
+
             DB::beginTransaction();
 
-            // VALIDACIONES
+            $collector =
+                $request->collector_uuid
+                ? $this->repository->find($request->collector_uuid)
+                : $this->repository->findByEmail($request->collector_email);
 
-            // validar que la vivienda exista
-            $dwelling = Dwelling::where('uuid', $dwelling_uuid)->first();
-            if (!$dwelling) {
-                return response()->json([
-                    'message' => 'Dwelling not found.'
-                ], 404);
-            }
-
-            // validar que el colector exista
-            $collector = Collector::where('email', $collector_email)->first();
-            if (!$collector) {
-                return response()->json([
-                    'message' => 'Collector not found.'
-                ], 404);
-            }
-
-            if($collector_uuid) {
-                $collector = Collector::where('uuid', $collector_uuid)->first();
-            }
-
-            // validar que la aportación exista
-            $contribution = Contribution::where('uuid', $contribution_uuid)->first();
-            if (!$contribution) {
-                return response()->json([
-                    'message' => 'Contribution not found.'
-                ], 404);
-            }
-
+            $contribution = $contributionRepository->find($request->contribution_uuid);
             $contribution->status = 'finalized';
-            $contribution->amount = $amount;
-            $contribution->comments = $comments;
+            $contribution->amount = $request->amount;
             $contribution->collector_uuid = $collector->uuid;
-            $contribution->dwelling_uuid = $dwelling->uuid;
-            $contribution->neighbor_uuid = $neighbor_uuid;
-            $contribution->save();
+            $contribution->dwelling_uuid = $request->dwelling_uuid;
+            $contribution->neighbor_uuid = $request->neighbor_uuid;
 
-            foreach ($periods as $period_uuid) {
-                $period = Period::where('uuid', $period_uuid)->first();
-                $period->status = 'paid';  
+            $periods = [];
+            foreach ($request->periods as $period_uuid) {
+                $period = $periodRepository->find($period_uuid);
+                $period->status = 'paid';
                 $period->amount = 0;
                 $period->save();
+                $periods[] = $period;
             }
 
+            $contribution->comments = $request->concept === 'period' ? (
+                'Pago de ' . (count($periods) === 1 ? 'periodo' : 'periodos') . ': ' . implode(', ', array_map(function ($period) {
+                    return $period->getMonth() . '-' . $period->year;
+                }, $periods))
+            ) : 'Reconexión';
+
+            $contribution->save();
+
             DB::commit();
-
-            return response()->json(
-                compact('dwelling', 'collector', 'contribution', 'periods', 'amount', 'concept', 'comments'),
-                200
-            );
-        } catch (\Throwable $th) {
-            //throw $th;
+            return response()->json($contribution, 200);
+        } catch (\Exception $e) {
             DB::rollBack();
-
-            APIHelper::responseFailed([
-                'message' => 'Failed to get data.',
+            return response()->json([
+                'message' => 'Error: ' . $e->getMessage()
             ], 500);
         }
     }

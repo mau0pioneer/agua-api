@@ -16,24 +16,24 @@ class ContributionAPIController extends APIController
     public function show($uuid)
     {
         try {
-            $register = $this->repository->find($uuid);
+            $contribution = $this->repository->find($uuid);
 
             // validar si existe el folio
-            if (is_null($register->id)) {
+            if (is_null($contribution->id)) {
                 return response()->json([
                     'message' => 'No se encontró el folio.',
                 ], 404);
             }
 
             // validar si el folio ya fue finalizado
-            if ($register->status === 'finalized') {
+            if ($contribution->status === 'finalized') {
                 return response()->json([
-                    'message' => 'El folio ' . $register->folio . ' ya fue finalizado. Intente con otro folio.'
+                    'message' => 'El folio ya fue finalizado. Intente con otro folio.'
                 ], 404);
             }
 
             // devolver los datos en formato JSON
-            return response()->json($register, 200);
+            return response()->json($contribution, 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Ocurrió un error inesperado.',

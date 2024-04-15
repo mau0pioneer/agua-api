@@ -11,5 +11,8 @@ class CollectorRepository extends Repository
     $this->model = $collector;
   }
 
-  
+  public function findByEmail($email)
+  {
+    return $this->model->where('email', $email)->first();
+  }
 }

@@ -9,7 +9,6 @@ use App\Models\Contribution;
 use App\Models\Dwelling;
 use App\Models\Neighbor;
 use App\Models\Period;
-use App\Models\Street;
 use App\Repositories\DwellingRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -196,6 +195,7 @@ class DwellingAPIController extends APIController
     public function storePeriod(Request $request, $uuid)
     {
         try {
+
             $dwelling = Dwelling::where('uuid', $uuid)->first();
 
             if (!$dwelling) {
