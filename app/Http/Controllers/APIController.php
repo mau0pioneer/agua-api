@@ -20,7 +20,7 @@ class APIController extends Controller
             // devolver los datos en formato JSON
             return response()->json($data, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -58,8 +58,9 @@ class APIController extends Controller
             $register = $this->repository->create($data);
             return response()->json($register, 201);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
-                'message' => 'Failed to create data.',
+            return response()->json([
+                'message' => 'Failed to save data.',
+                'errors' => $e->getMessage()
             ], 500);
         }
     }
@@ -78,8 +79,9 @@ class APIController extends Controller
             // devolver los datos en formato JSON
             return response()->json($register, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            return response()->json([
                 'message' => 'Failed to update data.',
+                'errors' => $e->getMessage()
             ], 500);
         }
     }

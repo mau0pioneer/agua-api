@@ -33,6 +33,7 @@ class CollectorAPIController extends APIController
                 'contribution_uuid' => 'required|uuid|exists:contributions,uuid',
                 'collector_uuid' => 'nullable|uuid|exists:collectors,uuid'
             ]);
+            
             if ($errors) return response()->json($errors, 400);
 
             DB::beginTransaction();

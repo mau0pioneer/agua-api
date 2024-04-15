@@ -507,8 +507,12 @@ class DwellingAPIController extends APIController
     {
         try {
             $period = $this->repository->getLastPeriod($uuid);
-            if (is_null($period)) return response()->json('No se encontró la vivienda.', 404);
-            return response()->json(strtolower("{$period->getMonth()} {$period->year}"), 200);
+            if (is_null($period)) return response()->json([
+                'message' => 'No se encontró la vivienda.'
+            ], 404);
+            return response()->json([
+                'message' => strtolower("{$period->getMonth()} {$period->year}")
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Failed to get data.',
