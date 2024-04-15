@@ -19,7 +19,7 @@ class DwellingRepository extends Repository
   public function getLastPeriod($uuid)
   {
     try {
-      $dwelling = $this->model->where('uuid', $uuid)->first(['uuid']);
+      $dwelling = $this->find($uuid);
       $period = $dwelling->periods()
         ->where('status', 'paid')
         ->orderBy('year', 'desc')

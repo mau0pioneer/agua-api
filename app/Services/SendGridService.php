@@ -34,7 +34,7 @@ class SendGridService
                     'type' => 'text/plain',
                     'value' => $content
                 ]
-            ]
+            ],
         ];
 
         $response = $this->httpClient->withHeaders([

@@ -29,7 +29,7 @@ class DwellingAPIController extends APIController
         } catch (\Throwable $th) {
             echo $th->getMessage();
         }
-        return response()->json('Email enviado'. ' ' . json_encode($send), 200);
+        return response()->json('Email enviado' . ' ' . json_encode($send), 200);
     }
 
     public function getDwellings2()
@@ -507,10 +507,7 @@ class DwellingAPIController extends APIController
     {
         try {
             $period = $this->repository->getLastPeriod($uuid);
-            if (!$period->month || !$period->year) {
-                return response()->json("No hay registro.", 200);
-            }
-
+            if (is_null($period)) return response()->json('No se encontró la vivienda.', 404);
             return response()->json(strtolower("{$period->getMonth()} {$period->year}"), 200);
         } catch (\Exception $e) {
             return response()->json([

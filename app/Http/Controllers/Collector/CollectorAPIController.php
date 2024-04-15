@@ -26,7 +26,7 @@ class CollectorAPIController extends APIController
                 'dwelling_uuid' => 'required|uuid|exists:dwellings,uuid',
                 'neighbor_uuid' => 'required|uuid|exists:neighbors,uuid',
                 'collector_email' => 'required|email|exists:collectors,email',
-                'periods' => 'required|array',
+                'periods' => 'array',
                 'amount' => 'required|numeric',
                 'concept' => 'required|string',
                 'comments' => 'nullable|string',
