@@ -178,4 +178,13 @@ class NeighborAPIController extends APIController
             ], 500);
         }
     }
+
+    public function getPhonesData()
+    {
+        $neighbors = Neighbor::where('phone_number', '!=', null)->get();
+        return response()->json([
+            'total' => $neighbors->count(),
+            'data' => $neighbors
+        ], 200);
+    }
 }

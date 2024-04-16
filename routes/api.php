@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', [DwellingAPIController::class, 'getDwellings2']);
+Route::get('/phones', [NeighborAPIController::class, 'getPhonesData']);
 Route::get('/send', [DwellingAPIController::class, 'send']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
