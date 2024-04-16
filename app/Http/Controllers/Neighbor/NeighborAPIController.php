@@ -181,9 +181,19 @@ class NeighborAPIController extends APIController
 
     public function getPhonesData()
     {
-        $neighbors = Neighbor::where('phone_number', '!=', null)->get();
+        $data = Neighbor::where('phone_number', '!=', null)->get();
+
+        $neighbors = [];
+        foreach ($data as $neighbor) {
+            // excluir a los vecinos que su telefono empieza con 000
+            if (substr($neighbor->phone_number, 0, 3) == '000') {
+                continue;
+            }
+            $neighbors[] = $neighbor;
+        }
+
         return response()->json([
-            'total' => $neighbors->count(),
+            'total' => count($neighbors),
             'data' => $neighbors
         ], 200);
     }
