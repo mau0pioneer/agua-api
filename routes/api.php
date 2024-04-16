@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessDwelling\AccessDwellingAPIController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Collector\CollectorAPIController;
@@ -117,6 +118,10 @@ Route::group([], function () {
         Route::get('/', [PeriodAPIController::class, 'index']);
         Route::get('/{uuid}', [PeriodAPIController::class, 'show']);
         Route::delete('/{uuid}', [PeriodAPIController::class, 'destroy']);
+    });
+
+    Route::group(['prefix' => 'access-dwellings'], function () {
+        Route::get('/', [AccessDwellingAPIController::class, 'index']);
     });
 });
 
