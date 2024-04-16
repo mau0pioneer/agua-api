@@ -8,6 +8,7 @@ use App\Http\Controllers\Dwelling\DwellingAPIController;
 use App\Http\Controllers\DwellingNeighbor\DwellingNeighborAPIController;
 use App\Http\Controllers\Map\MapAPIController;
 use App\Http\Controllers\Neighbor\NeighborAPIController;
+use App\Http\Controllers\Period\PeriodAPIController;
 use App\Http\Controllers\Signature\SignatureAPIController;
 use App\Http\Controllers\Street\StreetAPIController;
 use Illuminate\Http\Request;
@@ -67,7 +68,6 @@ Route::group([], function () {
         Route::get('/{uuid}/pending-periods', [DwellingAPIController::class, 'getPendingPeriods']);
         Route::get('/{uuid}/contributions', [DwellingAPIController::class, 'getContributions']);
         Route::get('/{uuid}/neighbors', [DwellingAPIController::class, 'getNeighbors']);
-        Route::post('/{uuid}/period', [DwellingAPIController::class, 'storePeriod']);
         Route::get('/{uuid}/contributions/neighbors', [DwellingAPIController::class, 'getNeighborsFromContributions']);
         Route::patch('/{uuid}/inhabited', [DwellingAPIController::class, 'changeInhabited']);
         Route::get('/{uuid}/neighbors-signatures', [DwellingAPIController::class, 'getNeigborsBySignatures']);
@@ -75,6 +75,7 @@ Route::group([], function () {
         Route::get('/{uuid}/last-contribution', [DwellingAPIController::class, 'getLastContribution']);
 
         Route::post('/{uuid}/neighbors', [DwellingAPIController::class, 'storeNeighbor']);
+        Route::post('/{uuid}/period', [DwellingAPIController::class, 'storePeriod']);
     });
 
     // neighbors routes group
@@ -109,6 +110,12 @@ Route::group([], function () {
 
     Route::group(['prefix' => 'signatures'], function () {
         Route::get('/', [SignatureAPIController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'periods'], function () {
+        Route::get('/', [PeriodAPIController::class, 'index']);
+        Route::get('/{uuid}', [PeriodAPIController::class, 'show']);
+        Route::delete('/{uuid}', [PeriodAPIController::class, 'destroy']);
     });
 });
 

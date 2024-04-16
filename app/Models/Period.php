@@ -34,6 +34,11 @@ class Period extends Model
         'dwelling_uuid',
     ];
 
+    public static $rules = [
+        'year' => 'required|integer',
+        'month' => 'required|string',
+    ];
+
     protected $casts = [
         'amount' => 'float',
     ];

@@ -121,15 +121,20 @@ class DwellingAPIController extends APIController
     public function storePeriod(Request $request, $uuid)
     {
         try {
+            $errors = $this->validateRules($request, null, Period::$rules, 'periods');
+            if ($errors) return $errors;
 
             $dwelling = Dwelling::where('uuid', $uuid)->first();
 
             if (!$dwelling) {
                 return response()->json([
-                    'message' => 'No se encontró la vivienda con el uuid proporcionado.'
+                    "message" => "No se encontró la vivienda.",
+                    "errors" => [
+                        'dwelling_uuid' => ['La vivienda no existe.']
+                    ]
                 ], 404);
             }
-
+            
             // validar si el periodo ya existe
             $period = Period::where('year', $request->get('year'))
                 ->where('month', $request->get('month'))
@@ -138,7 +143,10 @@ class DwellingAPIController extends APIController
 
             if ($period) {
                 return response()->json([
-                    'message' => $period->status === 'finalized' ? 'El periodo ya fue finalizado.' : 'El periodo ya existe.'
+                    'message' => $period->status === 'finalized' ? 'El periodo ya fue finalizado.' : 'El periodo ya existe.',
+                    'errors' => [
+                        'base' => ['El periodo ya existe.']
+                    ]
                 ], 400);
             }
 
