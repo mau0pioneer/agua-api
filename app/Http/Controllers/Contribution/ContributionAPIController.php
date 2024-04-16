@@ -51,16 +51,23 @@ class ContributionAPIController extends APIController
                 ], 400);
             }
 
-            $register = $this->repository->findByFolio($folio);
+            $contribution = $this->repository->findByFolio($folio);
 
             // validar si existe el folio
-            if (empty($register->id)) {
+            if (empty($contribution->id)) {
                 return response()->json([
                     'message' => 'No se encontró el folio.',
                 ], 404);
             }
 
-            return response()->json($register, 200);
+            // validar si el folio ya fue finalizado
+            if ($contribution->status === 'finalized') {
+                return response()->json([
+                    'message' => 'El folio ya fue finalizado. Intente con otro folio.'
+                ], 404);
+            }
+
+            return response()->json($contribution, 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Ocurrió un error inesperado.',

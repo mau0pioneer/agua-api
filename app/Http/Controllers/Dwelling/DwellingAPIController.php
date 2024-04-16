@@ -410,6 +410,7 @@ class DwellingAPIController extends APIController
                 'street_name' => $dwelling->street->name,
                 'pending_periods' => $dwelling->periods()->where('status', 'pending')->count(),
                 'contributions_count' => $dwelling->contributions()->count(),
+                'access_code' => $dwelling->access_code,
             ], 200);
         } catch (\Exception $e) {
             APIHelper::responseFailed([
