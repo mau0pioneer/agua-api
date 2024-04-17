@@ -79,7 +79,7 @@ class NeighborAPIController extends APIController
                 'lastname' => 'required',
             ]);
             if ($error) return $error;
-        
+
             // actualizar el registro en la base de datos
             $register = $this->repository->update($uuid, $data);
             // devolver los datos en formato JSON
@@ -196,5 +196,42 @@ class NeighborAPIController extends APIController
             'total' => count($neighbors),
             'data' => $neighbors
         ], 200);
+    }
+
+    public function getNotPhones()
+    {
+        $data = Neighbor::where('phone_number', '!=', null)->get();
+
+        $neighbors = [];
+        foreach ($data as $neighbor) {
+            // excluir a los vecinos que su telefono empieza con 000
+            if (substr($neighbor->phone_number, 0, 3) == '000') {
+                $neighbors[] = $neighbor;
+            }
+        }
+
+        $data = Neighbor::where('phone_number', '=', null)->get();
+        foreach ($data as $neighbor) {
+            $neighbors[] = $neighbor;
+        }
+
+        // ordenar neighbors por su primer dwelling y la street_uuid de ese dwelling
+        usort($neighbors, function ($a, $b) {
+            // obtener el primer dwelling de cada vecino
+            $dwellingA = $a->contributions()->first()->dwelling;
+            // obtener el primer dwelling de cada vecino
+            $dwellingB = $b->contributions()->first()->dwelling;
+
+            // si la calle es la misma, ordenar por el número de calle
+            if ($dwellingA->street_uuid == $dwellingB->street_uuid) {
+                // si el número de calle es el mismo, ordenar por el número de vivienda
+                return $dwellingA->street_number <=> $dwellingB->street_number;
+            }
+
+            // si la calle no es la misma, ordenar por la calle
+            return $dwellingA->street_uuid <=> $dwellingB->street_uuid;
+        });
+
+        return view('notphones', compact('neighbors'));
     }
 }
