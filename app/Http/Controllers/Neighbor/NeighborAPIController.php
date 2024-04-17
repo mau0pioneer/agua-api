@@ -217,6 +217,11 @@ class NeighborAPIController extends APIController
 
         // ordenar neighbors por su primer dwelling y la street_uuid de ese dwelling
         usort($neighbors, function ($a, $b) {
+            // validar que el vecino tenga contribuciones y viviendas
+            if (!$a->contributions()->first() || !$b->contributions()->first()) {
+                return 0;
+            }
+
             // obtener el primer dwelling de cada vecino
             $dwellingA = $a->contributions()->first()->dwelling;
             // obtener el primer dwelling de cada vecino
