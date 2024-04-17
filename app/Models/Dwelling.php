@@ -43,7 +43,8 @@ class Dwelling extends Model
         'title',
         'pending_periods',
         'contributions_count',
-        'neighbors_count'
+        'neighbors_count',
+        'street_name'
     ];
 
     public static $typeColors = [
@@ -88,6 +89,11 @@ class Dwelling extends Model
     {
         $street_name = $this->street()->value('name');
         return $street_name . ' ' . $this->street_number . ($this->interior_number ? ' ' . $this->interior_number : '');
+    }
+
+    public function getStreetNameAttribute()
+    {
+        return $this->street()->value('name');
     }
 
     public function getPendingPeriodsAttribute()
