@@ -28,9 +28,11 @@ class Controller extends BaseController
         } else {
             $template = 'Buenas noches, ';
         }
-        $template .= 'se ha presentado un error en el sistema a las ' . date('H:i:s') . ' del ' . date('d/m/Y') . '. ';
+
+        $server = $_SERVER['SERVER_NAME'];
+        $template .= 'se ha presentado un error en el sistema api-agua en el servidor: '. $server .' a las ' . date('H:i:s') . ' del ' . date('d/m/Y') . '. ';
         $template .= 'Por favor, revise el log de errores para más información. ';
         $template .= 'Aquí está la información del error: ' . $error . '.';
-        $sendGridServicio->sendEmail('mtz0mau2002@gmail.com', 'Error en el sistema', $template);
+        $sendGridServicio->sendEmail('mtz0mau2002@gmail.com', 'Error en el sistema - '.$server, $template);
     }
 }
