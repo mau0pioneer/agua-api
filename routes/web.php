@@ -18,8 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    // THIS IS A PRIVATE SITE
-    return 'This is a private site.';
+    return "Hello World";
 });
 
 Route::get('/home', function () {

@@ -33,7 +33,7 @@ class CollectorAPIController extends APIController
                 'contribution_uuid' => 'required|uuid|exists:contributions,uuid',
                 'collector_uuid' => 'nullable|uuid|exists:collectors,uuid'
             ]);
-            
+
             if ($errors) return response()->json($errors, 400);
 
             DB::beginTransaction();
@@ -42,7 +42,6 @@ class CollectorAPIController extends APIController
                 $request->collector_uuid
                 ? $this->repository->find($request->collector_uuid)
                 : $this->repository->findByEmail($request->collector_email);
-
             $contribution = $contributionRepository->find($request->contribution_uuid);
             $contribution->status = 'finalized';
             $contribution->amount = $request->amount;
