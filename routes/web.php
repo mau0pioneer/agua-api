@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Dwelling\DwellingAPIController;
 use App\Http\Controllers\Neighbor\NeighborAPIController;
+use App\Http\Controllers\SystemController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
@@ -42,3 +43,4 @@ Route::get('/acuse', [DwellingAPIController::class, 'acuse']);
 
 Route::get('/profet', [DwellingAPIController::class, 'profet']);
 Route::get('/vecinos', [NeighborAPIController::class, 'getNeighbors']);
+Route::get('/system/download-log', [SystemController::class, 'downloadLog']);

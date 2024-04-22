@@ -70,6 +70,7 @@ class CollectorAPIController extends APIController
             return response()->json($contribution, 200);
         } catch (\Exception $e) {
             DB::rollBack();
+            $this->logError($e);
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage()
             ], 500);

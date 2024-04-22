@@ -53,8 +53,9 @@ class NeighborAPIController extends APIController
             return response()->json($neighbor, 201);
         } catch (\Exception $e) {
             DB::rollBack();
-            APIHelper::responseFailed([
-                'message' => 'Failed to create data.',
+            $this->logError($e);
+            return response()->json([
+                'message' => 'Error al guardar el vecino.'
             ], 500);
         }
     }
@@ -85,8 +86,9 @@ class NeighborAPIController extends APIController
             // devolver los datos en formato JSON
             return response()->json($register, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
-                'message' => 'Failed to update data.',
+            $this->logError($e);
+            return response()->json([
+                'message' => 'Failed to update record.'
             ], 500);
         }
     }
@@ -99,9 +101,10 @@ class NeighborAPIController extends APIController
                 'fullname' => $neighbor->firstname . ' ' . $neighbor->lastname
             ], 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
-                'message' => 'Failed to get data.',
-                'errors' => $e->getMessage()
+            $this->logError($e);
+
+            return response()->json([
+                'message' => 'Failed to get data.'
             ], 500);
         }
     }
@@ -114,9 +117,9 @@ class NeighborAPIController extends APIController
                 'phone_number' => $neighbor->phone_number
             ], 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
-                'message' => 'Failed to get data.',
-                'errors' => $e->getMessage()
+            $this->logError($e);
+            return response()->json([
+                'message' => 'Failed to get data.'
             ], 500);
         }
     }
@@ -172,9 +175,9 @@ class NeighborAPIController extends APIController
 
             return response()->json($neighbor, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
-                'message' => 'Failed to update phone number.',
-                'errors' => $e->getMessage()
+            $this->logError($e);
+            return response()->json([
+                'message' => 'Failed to update phone number.'
             ], 500);
         }
     }

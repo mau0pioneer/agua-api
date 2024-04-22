@@ -35,6 +35,7 @@ class ContributionAPIController extends APIController
             // devolver los datos en formato JSON
             return response()->json($contribution, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Ocurrió un error inesperado.',
             ], 500);
@@ -69,6 +70,7 @@ class ContributionAPIController extends APIController
 
             return response()->json($contribution, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Ocurrió un error inesperado.',
             ], 500);

@@ -19,6 +19,7 @@ class APIController extends Controller
             // devolver los datos en formato JSON
             return response()->json($data, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
@@ -40,6 +41,7 @@ class APIController extends Controller
             // devolver los datos en formato JSON
             return response()->json($data, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
@@ -57,6 +59,7 @@ class APIController extends Controller
             $register = $this->repository->create($data);
             return response()->json($register, 201);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to save data.',
                 'errors' => $e->getMessage()
@@ -78,6 +81,7 @@ class APIController extends Controller
             // devolver los datos en formato JSON
             return response()->json($register, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to update data.',
                 'errors' => $e->getMessage()
@@ -105,6 +109,7 @@ class APIController extends Controller
                 'data' => $deleted
             ], 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to delete data.',
                 'errors' => $e->getMessage()

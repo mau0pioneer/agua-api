@@ -10,7 +10,6 @@ use App\Models\Dwelling;
 use App\Models\Neighbor;
 use App\Models\Period;
 use App\Repositories\DwellingRepository;
-use App\Services\SendGridService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,44 +20,13 @@ class DwellingAPIController extends APIController
         $this->repository = $dwellingRepository;
     }
 
-    public function send()
-    {
-        try {
-            $sendGridService = new SendGridService();
-            $send = $sendGridService->sendEmail('mtz0mau2002@gmail.com', 'hola mundo2', '<strong>Hola mundo</strong>');
-        } catch (\Throwable $th) {
-            echo $th->getMessage();
-        }
-
-        return response()->json('Email enviado' . ' ' . json_encode($send), 200);
-    }
-
-    public function getTitle($uuid)
-    {
-        try {
-            $dwelling = Dwelling::with(['street' => function ($query) {
-                // obtener solo el nombre de la calle y uuid de la calle
-                $query->select(['uuid', 'name']);
-            }])
-                ->where('uuid', $uuid)->first(['street_uuid', 'street_number', 'interior_number']);
-
-            return response()->json([
-                'title' => $dwelling->street->name . ' ' . $dwelling->street_number . ' ' . $dwelling->interior_number
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to get data.',
-                'errors' => $e->getMessage()
-            ], 500);
-        }
-    }
-
     public function changeInhabited(Request $request, $uuid)
     {
         try {
             $dwelling = $this->repository->changeInhabited($uuid, $request->get('inhabited'));
             return response()->json($dwelling->inhabited, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to update data.',
                 'errors' => $e->getMessage()
@@ -72,6 +40,7 @@ class DwellingAPIController extends APIController
             $contributions = $this->repository->getContributions($uuid);
             return response()->json($contributions, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
@@ -85,6 +54,7 @@ class DwellingAPIController extends APIController
             $neighbors = $this->repository->getNeighbors($uuid);
             return response()->json($neighbors, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
@@ -98,6 +68,7 @@ class DwellingAPIController extends APIController
             $periods = $this->repository->getPeriods($uuid);
             return response()->json($periods, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
@@ -111,6 +82,7 @@ class DwellingAPIController extends APIController
             $periods = $this->repository->getPendingPeriods($uuid);
             return response()->json($periods, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
@@ -134,7 +106,7 @@ class DwellingAPIController extends APIController
                     ]
                 ], 404);
             }
-            
+
             // validar si el periodo ya existe
             $period = Period::where('year', $request->get('year'))
                 ->where('month', $request->get('month'))
@@ -160,7 +132,8 @@ class DwellingAPIController extends APIController
 
             return response()->json($period, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            $this->logError($e);
+            return response()->json([
                 'message' => 'Failed to store data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -174,6 +147,7 @@ class DwellingAPIController extends APIController
             $neighbors = $dwelling->neighbors()->get(['neighbors.uuid', 'firstname', 'lastname']);
             return response()->json($neighbors, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
@@ -191,7 +165,8 @@ class DwellingAPIController extends APIController
             })->get(['neighbors.uuid', 'firstname', 'lastname', 'phone_number'])->unique('uuid');
             return response()->json($neighbors, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            $this->logError($e);
+            return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -206,7 +181,8 @@ class DwellingAPIController extends APIController
 
             return response()->json($dwelling, 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            $this->logError($e);
+            return response()->json([
                 'message' => 'Failed to update data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -300,8 +276,8 @@ class DwellingAPIController extends APIController
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-
-            APIHelper::responseFailed([
+            $this->logError($e);
+            return response()->json([
                 'message' => 'Failed to store data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -362,7 +338,8 @@ class DwellingAPIController extends APIController
                 'periods' => $dwelling->periods,
             ], 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            $this->logError($e);
+            return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -413,7 +390,8 @@ class DwellingAPIController extends APIController
                 'access_code' => $dwelling->access_code,
             ], 200);
         } catch (\Exception $e) {
-            APIHelper::responseFailed([
+            $this->logError($e);
+            return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
             ], 500);
@@ -444,6 +422,7 @@ class DwellingAPIController extends APIController
                 'message' => strtolower("{$period->getMonth()} {$period->year}")
             ], 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to get data.',
                 'errors' => $e->getMessage()
@@ -470,6 +449,7 @@ class DwellingAPIController extends APIController
             $dwelling->neighbors()->attach($neighbor->uuid);
             return response()->json($neighbor, 200);
         } catch (\Exception $e) {
+            $this->logError($e);
             return response()->json([
                 'message' => 'Failed to store data.',
                 'errors' => $e->getMessage()

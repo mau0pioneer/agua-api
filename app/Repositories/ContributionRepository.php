@@ -13,17 +13,6 @@ class ContributionRepository extends Repository
 
   public function findByFolio($folio)
   {
-    $register = new $this->model([
-      'folio' => $folio
-    ]);
-    
-    try {
-      $register = Contribution::where('folio', 'like', '%'.$folio.'%')->first();
-    } catch (\Exception $e) {
-      $this->logError($e);
-      throw new \Exception('Ocurrió un error inesperado.');
-    }
-
-    return $register;
+    return Contribution::where('folio', 'like', '%' . $folio . '%')->first();
   }
 }
