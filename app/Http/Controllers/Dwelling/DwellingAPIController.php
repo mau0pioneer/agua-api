@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Dwelling;
 
-use App\Helpers\APIHelper;
 use App\Http\Controllers\APIController;
 use App\Models\AccessDwelling;
 use App\Models\Contribution;
@@ -545,27 +544,59 @@ class DwellingAPIController extends APIController
     {
         $dwellings = Dwelling::whereHas('contributions')->get();
         $dwellingsWithDebt = [];
+
         foreach ($dwellings as $dwelling) {
             // obtener el ultimo period de la vivienda con estatus pagado
-            $lastPeriod = $dwelling->periods()->where('status', 'paid')->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
+            $periods = Period::where('dwelling_uuid', $dwelling->uuid)
+                ->where('status', 'pending')
+                ->orderBy('year', 'asc')
+                ->orderBy('month', 'asc')
+                ->get();
+            $pendingPeriodsCount = count($periods);
 
-            if (!$lastPeriod) {
-                $dwellingsWithDebt[] = $dwelling;
-                continue;
-            }
+            if ($pendingPeriodsCount > 0 && $dwelling->neighbors()->count() > 0) {
+                $phone = $dwelling->neighbors()->first()->phone_number;
 
-            // comparar el mes y año del ultimo periodo pagado con el mes y año actual
-            $now = date('Y-m-d');
-            $date_period = $lastPeriod->year . '-' . $lastPeriod->month . '-01';
+                if ($phone) {
+                    // periods to text
+                    $periodsText = '';
+                    // agrupar por año
+                    $periods = $periods->groupBy('year');
 
-            // obtener en una variable los meses de diferencia entre la fecha actual y la fecha del ultimo periodo pagado
-            $months = (int)date('m', strtotime($now)) - (int)date('m', strtotime($date_period));
+                    foreach ($periods as $year => $periods) {
+                        // comprobar cuantos periods hay en el año
+                        $periodsCount = count($periods);
 
-            // pasar de negativo a positivo
-            $months = intval(abs($months));
+                        // si es mas de uno, se concatenan los meses
+                        // si es uno -> Abril de 2024
+                        // si son dos -> Enero y Abril de 2024
+                        // si son tres -> Enero, Febrero y Abril de 2024
+                        // si son cuatro -> Enero, Febrero, Marzo y Abril de 2024
 
-            if ($months > 2) {
-                $dwellingsWithDebt[] = $dwelling;
+                        // se obtiene el mes con $period->getMonth()
+                        // al penultimo se le concatena ' y '
+                        // al ultimo se le concatena ' de ' . $year
+                        $periodsText .= $periods->map(function ($period, $key) use ($year, $periodsCount) {
+                            if ($key === 0) {
+                                return $period->getMonth();
+                            } else {
+                                return $key === $periodsCount - 1 ? ' y ' . $period->getMonth() . ' de ' . $year . '  ' : ', ' . $period->getMonth();
+                            }
+                        })->implode('');
+                    }
+                
+
+                    $periodsText = substr($periodsText, 0, -2);
+
+                    $address = $dwelling->street->name . ' ' . $dwelling->street_number . ' ' . $dwelling->interior_number;
+
+                    $dwellingsWithDebt[] = [
+                        'phone_number' => $phone,
+                        'access_code' => $dwelling->access_code,
+                        'periods' => $periodsText,
+                        'address' => $address,
+                    ];
+                }
             }
         }
 

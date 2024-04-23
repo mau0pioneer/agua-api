@@ -11,7 +11,7 @@ class Period extends Model
 {
     use HasFactory, SoftDeletes;
 
-    private $months = [
+    public $months = [
         'ENERO' => '01',
         'FEBRERO' => '02',
         'MARZO' => '03',
