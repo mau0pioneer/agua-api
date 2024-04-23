@@ -511,11 +511,14 @@ class DwellingAPIController extends APIController
 
             if ($months > 2) {
                 $dwellingsWithDebt[] = $dwelling;
+                $firstname = $dwelling->neighbors()->first()->firstname || '';
+                $lastname = $dwelling->neighbors()->first()->lastname || '';
+
                 $data[] = [
                     'CALLE' => strtoupper($dwelling->street->name),
                     'NUMERO' => $dwelling->street_number,
                     'INTERIOR' => $dwelling->interior_number,
-                    'NOMBRE' => strtoupper($dwelling->neighbors()->first()->firstname || '' . ' ' . $dwelling->neighbors()->first()->lastname || ''),
+                    'NOMBRE' => strtoupper($firstname . ' ' . $lastname),
                     'TELEFONO' => $dwelling->neighbors()->first()->phone_number,
                     'ULTIMO_PAGO' => $lastPeriod->getMonth() . ' ' . $lastPeriod->year,
                 ];
