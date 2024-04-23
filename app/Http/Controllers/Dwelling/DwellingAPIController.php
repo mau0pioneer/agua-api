@@ -511,8 +511,14 @@ class DwellingAPIController extends APIController
 
             if ($months > 2) {
                 $dwellingsWithDebt[] = $dwelling;
-                $firstname = $dwelling->neighbors()->first()->firstname || '';
-                $lastname = $dwelling->neighbors()->first()->lastname || '';
+                // compronar si hay al menos un vecino en la vivienda
+                if ($dwelling->neighbors()->count() > 0) {
+                    $firstname = $dwelling->neighbors()->first()->firstname || '';
+                    $lastname = $dwelling->neighbors()->first()->lastname || '';
+                } else {
+                    $firstname = '';
+                    $lastname = '';
+                }
 
                 $data[] = [
                     'CALLE' => strtoupper($dwelling->street->name),
