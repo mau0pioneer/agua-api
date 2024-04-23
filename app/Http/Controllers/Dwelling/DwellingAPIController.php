@@ -539,4 +539,36 @@ class DwellingAPIController extends APIController
 
         return view('latest', ['dwellings' => $dwellingsWithDebt]);
     }
+
+    // obtener las viviendas que deban mas de tres periodos
+    public function getDwellings3()
+    {
+        $dwellings = Dwelling::whereHas('contributions')->get();
+        $dwellingsWithDebt = [];
+        foreach ($dwellings as $dwelling) {
+            // obtener el ultimo period de la vivienda con estatus pagado
+            $lastPeriod = $dwelling->periods()->where('status', 'paid')->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
+
+            if (!$lastPeriod) {
+                $dwellingsWithDebt[] = $dwelling;
+                continue;
+            }
+
+            // comparar el mes y año del ultimo periodo pagado con el mes y año actual
+            $now = date('Y-m-d');
+            $date_period = $lastPeriod->year . '-' . $lastPeriod->month . '-01';
+
+            // obtener en una variable los meses de diferencia entre la fecha actual y la fecha del ultimo periodo pagado
+            $months = (int)date('m', strtotime($now)) - (int)date('m', strtotime($date_period));
+
+            // pasar de negativo a positivo
+            $months = intval(abs($months));
+
+            if ($months > 2) {
+                $dwellingsWithDebt[] = $dwelling;
+            }
+        }
+
+        return response()->json($dwellingsWithDebt, 200);
+    }
 }

@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', [DwellingAPIController::class, 'getDwellings2']);
+Route::get('/test3', [DwellingAPIController::class, 'getDwellings3']);
 Route::get('/phones', [NeighborAPIController::class, 'getPhonesData']);
 Route::get('/not-phones', [NeighborAPIController::class, 'getNotPhones']);
 Route::get('/send', [DwellingAPIController::class, 'send']);
