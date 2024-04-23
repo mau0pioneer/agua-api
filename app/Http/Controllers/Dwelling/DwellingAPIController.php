@@ -590,12 +590,15 @@ class DwellingAPIController extends APIController
 
                     $address = $dwelling->street->name . ' ' . $dwelling->street_number . ' ' . $dwelling->interior_number;
 
+                    $neighbor_name = $dwelling->neighbors()->first()->firstname . ' ' . $dwelling->neighbors()->first()->lastname;
+
                     $dwellingsWithDebt[] = [
                         'phone_number' => $phone,
                         'access_code' => $dwelling->access_code,
                         'periods' => $periodsText,
                         'address' => $address,
-                        'url' => 'https://agua-recibos.web.app/?accessCode=' . $dwelling->access_code
+                        'url' => 'https://agua-recibos.web.app/?accessCode=' . $dwelling->access_code,
+                        'neighbor_name' => $neighbor_name,
                     ];
                 }
             }
