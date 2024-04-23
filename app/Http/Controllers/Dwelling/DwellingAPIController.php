@@ -515,7 +515,7 @@ class DwellingAPIController extends APIController
                     'CALLE' => strtoupper($dwelling->street->name),
                     'NUMERO' => $dwelling->street_number,
                     'INTERIOR' => $dwelling->interior_number,
-                    'NOMBRE' => strtoupper($dwelling->neighbors()->first()->firstname . ' ' . $dwelling->neighbors()->first()->lastname),
+                    'NOMBRE' => strtoupper($dwelling->neighbors()->first()->firstname || '' . ' ' . $dwelling->neighbors()->first()->lastname || ''),
                     'TELEFONO' => $dwelling->neighbors()->first()->phone_number,
                     'ULTIMO_PAGO' => $lastPeriod->getMonth() . ' ' . $lastPeriod->year,
                 ];
