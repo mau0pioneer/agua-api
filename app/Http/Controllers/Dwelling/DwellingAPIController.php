@@ -595,6 +595,7 @@ class DwellingAPIController extends APIController
                         'access_code' => $dwelling->access_code,
                         'periods' => $periodsText,
                         'address' => $address,
+                        'url' => 'https://agua-recibos.web.app/?accessCode=' . $dwelling->access_code
                     ];
                 }
             }
