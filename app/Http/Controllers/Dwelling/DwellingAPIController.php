@@ -515,9 +515,11 @@ class DwellingAPIController extends APIController
                 if ($dwelling->neighbors()->count() > 0) {
                     $firstname = $dwelling->neighbors()->first()->firstname || '';
                     $lastname = $dwelling->neighbors()->first()->lastname || '';
+                    $phone = $dwelling->neighbors()->first()->phone_number || '';
                 } else {
                     $firstname = '';
                     $lastname = '';
+                    $phone = '';
                 }
 
                 $data[] = [
@@ -525,7 +527,7 @@ class DwellingAPIController extends APIController
                     'NUMERO' => $dwelling->street_number,
                     'INTERIOR' => $dwelling->interior_number,
                     'NOMBRE' => strtoupper($firstname . ' ' . $lastname),
-                    'TELEFONO' => $dwelling->neighbors()->first()->phone_number,
+                    'TELEFONO' => $phone,
                     'ULTIMO_PAGO' => $lastPeriod->getMonth() . ' ' . $lastPeriod->year,
                 ];
             }
