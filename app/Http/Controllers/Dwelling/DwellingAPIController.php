@@ -599,6 +599,7 @@ class DwellingAPIController extends APIController
                         'address' => $address,
                         'url' => 'https://agua-recibos.web.app/?accessCode=' . $dwelling->access_code,
                         'neighbor_name' => $neighbor_name,
+                        'uuid' => $dwelling->uuid,
                     ];
                 }
             }
