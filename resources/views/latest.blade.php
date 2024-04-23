@@ -20,7 +20,8 @@
         </tr>
       </thead>
       <tbody>
-        @foreach ($dwellings as $i=>$dwelling)
+        @foreach ($dwellings as $dwellingss)
+        @foreach ($dwellingss as $i=>$dwelling)
         <tr>
           <th scope="row" >{{ $i+1 }}</th>
           <th style="text-transform: uppercase;">
@@ -70,6 +71,8 @@
           </td>
         </tr>
         @endforeach
+        @endforeach
+        
       </tbody>
     </table>
   </body>

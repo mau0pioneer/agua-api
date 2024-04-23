@@ -490,46 +490,50 @@ class DwellingAPIController extends APIController
         $dwellingsWithDebt = [];
         $data = [];
 
-        foreach ($dwellings as $dwelling) {
-            // obtener el ultimo period de la vivienda con estatus pagado
-            $lastPeriod = $dwelling->periods()->where('status', 'paid')->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
-            if (!$lastPeriod) {
-                $dwellingsWithDebt[] = $dwelling;
-                continue;
-            }
+        // Agrupar las viviendas por street_uuid
+        $groupedDwellings = $dwellings->groupBy('street_uuid');
 
-            // comparar el mes y año del ultimo periodo pagado con el mes y año actual
-            $now = date('Y-m-d');
-            $date_period = $lastPeriod->year . '-' . $lastPeriod->month . '-01';
-
-
-            // obtener en una variable los meses de diferencia entre la fecha actual y la fecha del ultimo periodo pagado
-            $months = (int)date('m', strtotime($now)) - (int)date('m', strtotime($date_period));
-
-            // pasar de negativo a positivo
-            $months = intval(abs($months));
-
-            if ($months > 2) {
-                $dwellingsWithDebt[] = $dwelling;
-                // compronar si hay al menos un vecino en la vivienda
-                if ($dwelling->neighbors()->count() > 0) {
-                    $firstname = $dwelling->neighbors()->first()->firstname || '';
-                    $lastname = $dwelling->neighbors()->first()->lastname || '';
-                    $phone = $dwelling->neighbors()->first()->phone_number || '';
-                } else {
-                    $firstname = '';
-                    $lastname = '';
-                    $phone = '';
+        foreach ($groupedDwellings as $street_uuid => $dwellings) {
+            foreach ($dwellings as $dwelling) {
+                // obtener el ultimo period de la vivienda con estatus pagado
+                $lastPeriod = $dwelling->periods()->where('status', 'paid')->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
+                if (!$lastPeriod) {
+                    $dwellingsWithDebt[$street_uuid][] = $dwelling;
+                    continue;
                 }
 
-                $data[] = [
-                    'CALLE' => strtoupper($dwelling->street->name),
-                    'NUMERO' => $dwelling->street_number,
-                    'INTERIOR' => $dwelling->interior_number,
-                    'NOMBRE' => strtoupper($firstname . ' ' . $lastname),
-                    'TELEFONO' => $phone,
-                    'ULTIMO_PAGO' => $lastPeriod->getMonth() . ' ' . $lastPeriod->year,
-                ];
+                // comparar el mes y año del ultimo periodo pagado con el mes y año actual
+                $now = date('Y-m-d');
+                $date_period = $lastPeriod->year . '-' . $lastPeriod->month . '-01';
+
+                // obtener en una variable los meses de diferencia entre la fecha actual y la fecha del ultimo periodo pagado
+                $months = (int)date('m', strtotime($now)) - (int)date('m', strtotime($date_period));
+
+                // pasar de negativo a positivo
+                $months = intval(abs($months));
+
+                if ($months > 2) {
+                    $dwellingsWithDebt[$street_uuid][] = $dwelling;
+                    // compronar si hay al menos un vecino en la vivienda
+                    if ($dwelling->neighbors()->count() > 0) {
+                        $firstname = $dwelling->neighbors()->first()->firstname || '';
+                        $lastname = $dwelling->neighbors()->first()->lastname || '';
+                        $phone = $dwelling->neighbors()->first()->phone_number || '';
+                    } else {
+                        $firstname = '';
+                        $lastname = '';
+                        $phone = '';
+                    }
+
+                    $data[$street_uuid][] = [
+                        'CALLE' => strtoupper($dwelling->street->name),
+                        'NUMERO' => $dwelling->street_number,
+                        'INTERIOR' => $dwelling->interior_number,
+                        'NOMBRE' => strtoupper($firstname . ' ' . $lastname),
+                        'TELEFONO' => $phone,
+                        'ULTIMO_PAGO' => $lastPeriod->getMonth() . ' ' . $lastPeriod->year,
+                    ];
+                }
             }
         }
 
