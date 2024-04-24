@@ -576,13 +576,20 @@ class DwellingAPIController extends APIController
                         // se obtiene el mes con $period->getMonth()
                         // al penultimo se le concatena ' y '
                         // al ultimo se le concatena ' de ' . $year
-                        $periodsText .= $periods->map(function ($period, $key) use ($year, $periodsCount) {
-                            if ($key === 0) {
-                                return $period->getMonth();
-                            } else {
-                                return $key === $periodsCount - 1 ? ' y ' . $period->getMonth() . ' de ' . $year . '  ' : ', ' . $period->getMonth();
-                            }
-                        })->implode('');
+
+                        if($periodsCount === 1) {
+                            $periodsText .= $periods->first()->getMonth() . ' de ' . $year . '  ';
+                        } else {
+                            $periodsText .= $periods->map(function ($period, $key) use ($year, $periodsCount) {
+                                if ($key === 0) {
+                                    return $period->getMonth();
+                                } else {
+                                    return $key === $periodsCount - 1 ? ' y ' . $period->getMonth() . ' de ' . $year . '  ' : ', ' . $period->getMonth();
+                                }
+                            })->implode('');
+                        }
+
+                        
                     }
                 
 
