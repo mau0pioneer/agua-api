@@ -28,7 +28,7 @@ class SystemController extends Controller
             }
 
             // validar que el date sea menor a la fecha actual
-            if ($date > '2024-04-01') {
+            if ($date > '2024-03-31') {
                 continue;
             }
 
