@@ -22,6 +22,8 @@ Route::get('/', function () {
     return "Hello World";
 });
 
+Route::get('/report', [SystemController::class, 'report']);
+
 Route::get('/home', function () {
     $folios = json_decode(File::get(database_path('jsons/db.json')), true);
 
