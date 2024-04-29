@@ -23,7 +23,6 @@ class DwellingRepository extends Repository
   {
     $dwelling = $this->find($uuid);
     $contributions = $dwelling->contributions()
-      ->where('status', 'paid')
       ->orderBy('created_at', 'desc')
       ->get();
     return $contributions;
