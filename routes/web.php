@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return "Holamundo";
+    return 2*2*34;
 });
 
 Route::get('/report', [SystemController::class, 'report']);
